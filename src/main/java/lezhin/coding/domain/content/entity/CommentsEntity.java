@@ -17,4 +17,6 @@ public class CommentsEntity {
     @Column(name = "commentsId")
     @Id
     private Long id;
+
+
 }
