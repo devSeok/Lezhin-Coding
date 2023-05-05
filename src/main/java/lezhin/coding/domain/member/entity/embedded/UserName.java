@@ -1,4 +1,4 @@
-package lezhin.coding.domain.user.entity.embedded;
+package lezhin.coding.domain.member.entity.embedded;
 
 import javax.persistence.Column;
 

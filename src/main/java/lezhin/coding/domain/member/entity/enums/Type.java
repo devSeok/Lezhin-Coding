@@ -1,4 +1,4 @@
-package lezhin.coding.domain.user.entity;
+package lezhin.coding.domain.member.entity.enums;
 
 
 import lombok.AllArgsConstructor;
