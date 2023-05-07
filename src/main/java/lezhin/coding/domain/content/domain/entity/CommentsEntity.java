@@ -1,4 +1,4 @@
-package lezhin.coding.domain.content.entity;
+package lezhin.coding.domain.content.domain.entity;
 
 
 import lezhin.coding.domain.content.entity.embedded.Comment;

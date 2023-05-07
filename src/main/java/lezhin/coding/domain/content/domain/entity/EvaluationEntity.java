@@ -1,7 +1,7 @@
-package lezhin.coding.domain.content.entity;
+package lezhin.coding.domain.content.domain.entity;
 
 
-import lezhin.coding.domain.content.entity.enums.EvaluationType;
+import lezhin.coding.domain.content.domain.entity.enums.EvaluationType;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;

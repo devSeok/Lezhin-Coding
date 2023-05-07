@@ -1,6 +1,7 @@
 package lezhin.coding.global.exception.error;
 
 import lezhin.coding.global.exception.error.exception.BusinessException;
+import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
 import lezhin.coding.global.exception.error.exception.EntityNotFoundException;
 import lezhin.coding.global.exception.error.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,17 @@ public class CustomGlobalExceptionHandler{
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
         log.error("handleBusinessException", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+
+
+        System.out.println(new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus())));
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(EmailDuplicationException.class)
+    protected ResponseEntity<ErrorResponse> emailDuplicationException(final EmailDuplicationException e) {
+        log.error("emailDuplicationException", e);
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode);
 

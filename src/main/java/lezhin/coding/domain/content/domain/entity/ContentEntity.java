@@ -1,9 +1,9 @@
-package lezhin.coding.domain.content.entity;
+package lezhin.coding.domain.content.domain.entity;
 
 
-import lezhin.coding.domain.content.entity.embedded.Amount;
-import lezhin.coding.domain.content.entity.embedded.Content;
-import lezhin.coding.domain.content.entity.enums.PayType;
+import lezhin.coding.domain.content.domain.entity.embedded.Amount;
+import lezhin.coding.domain.content.domain.entity.enums.PayType;
+import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,12 +22,17 @@ public class ContentEntity extends BaseTimeEntity {
     @Id
     private Long id;
 
-    @Embedded
-    private Content content;
+    @Column(length = 500)
+    private String content;
 
     @Enumerated(EnumType.STRING)
     private PayType payType;
 
     @Embedded
     private Amount amount;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+
 }

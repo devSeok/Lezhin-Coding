@@ -6,6 +6,7 @@ import lezhin.coding.domain.member.domain.repository.MemberRepository;
 import lezhin.coding.domain.member.dto.MemberDto;
 import lezhin.coding.domain.member.service.MemberService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
+import lezhin.coding.global.exception.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +19,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberEntity memberRegister(MemberDto.MemberRegisterReqDto memberDto) {
 
-        if (isExistedEmail(memberDto.getUserEmail()))
-            throw new EmailDuplicationException("djqtse");
+        if (memberRepository.existsByUserEmail(memberDto.getUserEmail())) {
+            throw new EmailDuplicationException("메일이 존재합니다");
+        }
 
         return memberRepository.save(memberDto.toEntity());
     }
 
-    @Transactional(readOnly = true)
-    public boolean isExistedEmail(UserEmail email) {
-        return memberRepository.findByUserEmail(email) != null;
-    }
 
     @Override
     public void memberDelete(Long memberId) {
