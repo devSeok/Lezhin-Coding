@@ -1,15 +1,14 @@
-package lezhin.coding.domain.member.entity.enums;
+package lezhin.coding.domain.member.domain.entity.enums;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public enum Type {
-    GENERAL("general", "일반"),
-    ADULT("adult", "성인");
-
+@Getter
+public enum Gender {
+    MAN("M", "남자"),
+    WOMAN("W", "여자");
     private final String code;
     private final String value;
 

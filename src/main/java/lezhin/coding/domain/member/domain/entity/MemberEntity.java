@@ -1,11 +1,12 @@
-package lezhin.coding.domain.member.entity;
+package lezhin.coding.domain.member.domain.entity;
 
-import lezhin.coding.domain.member.entity.embedded.UserEmail;
-import lezhin.coding.domain.member.entity.embedded.UserName;
-import lezhin.coding.domain.member.entity.enums.Gender;
-import lezhin.coding.domain.member.entity.enums.Type;
+import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
+import lezhin.coding.domain.member.domain.entity.embedded.UserName;
+import lezhin.coding.domain.member.domain.entity.enums.Gender;
+import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +19,6 @@ import javax.persistence.*;
 public class MemberEntity extends BaseTimeEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
     @Id
     private Long id;
     @Embedded
@@ -30,4 +30,11 @@ public class MemberEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @Builder
+    public MemberEntity(UserName userName, UserEmail userEmail, Gender gender, Type type) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.gender = gender;
+        this.type = type;
+    }
 }
