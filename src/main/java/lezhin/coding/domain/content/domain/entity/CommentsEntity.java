@@ -1,7 +1,7 @@
 package lezhin.coding.domain.content.domain.entity;
 
 
-import lezhin.coding.domain.content.entity.embedded.Comment;
+import lezhin.coding.domain.content.domain.entity.embedded.Comment;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;

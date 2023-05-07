@@ -6,6 +6,7 @@ import lezhin.coding.domain.content.domain.entity.enums.PayType;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,5 +35,11 @@ public class ContentEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-
+    @Builder
+    public ContentEntity(String content, PayType payType, Amount amount, Type type) {
+        this.content = content;
+        this.payType = payType;
+        this.amount = amount;
+        this.type = type;
+    }
 }

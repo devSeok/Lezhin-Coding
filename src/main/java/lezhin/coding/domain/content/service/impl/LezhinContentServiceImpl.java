@@ -1,12 +1,15 @@
 package lezhin.coding.domain.content.service.impl;
 
+import lezhin.coding.domain.content.dto.ContentRegisterDto;
 import lezhin.coding.domain.content.service.ContentService;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
+@Primary
 public class LezhinContentServiceImpl implements ContentService {
     @Override
-    public void contentRegister() {
+    public void contentRegister(ContentRegisterDto.ContentRegisterReqDto dto) {
 
     }
 
