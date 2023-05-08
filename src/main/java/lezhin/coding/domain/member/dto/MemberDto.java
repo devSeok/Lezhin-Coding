@@ -6,14 +6,14 @@ import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.entity.enums.Gender;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
-import lezhin.coding.global.CheckValidEnum;
+import lezhin.coding.global.EnumTypeValid;
 import lombok.*;
 
 import javax.validation.Valid;
 
 
 public class MemberDto {
-    @Getter
+    @Data
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MemberRegisterReqDto {
 
@@ -22,10 +22,10 @@ public class MemberDto {
         @Valid
         private UserEmail userEmail;
 
-        @CheckValidEnum(target = Gender.class, message = "성별 타입은 MAN or WOMAN 이어야합니다.")
+        @EnumTypeValid(target = Gender.class, message = "성별 타입은 MAN or WOMAN 이어야합니다.")
         private Gender gender;
 
-        @CheckValidEnum(target = Type.class, message = "타입은 GENERAL(일반) or ADULT(성인) 이어야합니다.")
+        @EnumTypeValid(target = Type.class, message = "타입은 GENERAL(일반) or ADULT(성인) 이어야합니다.")
         private Type type;
 
         public MemberEntity toEntity() {

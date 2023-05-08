@@ -1,5 +1,6 @@
 package lezhin.coding.global.exception.error;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lezhin.coding.global.exception.error.exception.BusinessException;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
 import lezhin.coding.global.exception.error.exception.EntityNotFoundException;
@@ -7,15 +8,19 @@ import lezhin.coding.global.exception.error.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.util.regex.Matcher;
 
 @ControllerAdvice
 @Slf4j
@@ -72,6 +77,14 @@ public class CustomGlobalExceptionHandler{
         log.error("handleAccessDeniedException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.HANDLE_ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleJsonErrors(HttpMessageNotReadableException e){
+        log.error("HttpMessageNotReadableException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BusinessException.class)

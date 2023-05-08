@@ -20,8 +20,6 @@ public class ContentApiController {
     @PostMapping
     public void contentRegister(@Valid @RequestBody ContentRegisterDto.ContentRegisterReqDto dto) {
 
-
-        System.out.println(dto);
         contentService.contentRegister(dto);
 
 
