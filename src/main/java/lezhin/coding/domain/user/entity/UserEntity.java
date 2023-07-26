@@ -18,13 +18,14 @@ public class UserEntity {
     @Column(name = "userId")
     @Id
     private Long id;
-
     @Embedded
     private UserName userName;
     @Embedded
     private UserEmail userEmail;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
 }
