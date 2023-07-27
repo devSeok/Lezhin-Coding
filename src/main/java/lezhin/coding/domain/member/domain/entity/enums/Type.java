@@ -24,4 +24,19 @@ public enum Type implements PolymorphicEnum {
     public String getCode() {
         return code;
     }
+
+
+    public static Type of(String gender) {
+        if(gender == null) {
+            throw new IllegalArgumentException();
+        }
+
+        for (Type g : Type.values()) {
+            if(g.code.equals(gender)) {
+                return g;
+            }
+        }
+
+        throw new IllegalArgumentException("일치하는게 없습니다");
+    }
 }

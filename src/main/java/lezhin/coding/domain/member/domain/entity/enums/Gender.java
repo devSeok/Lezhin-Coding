@@ -23,5 +23,19 @@ public enum Gender implements PolymorphicEnum {
         return title;
     }
 
+    public static Gender of(String gender) {
+        if(gender == null) {
+            throw new IllegalArgumentException();
+        }
+
+        for (Gender g : Gender.values()) {
+            if(g.code.equals(gender)) {
+                return g;
+            }
+        }
+
+        throw new IllegalArgumentException("일치하는게 없습니다");
+    }
+
 
 }

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Constraint(validatedBy = EnumTypeValid.EnumValidator.class)
+@Documented
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface EnumTypeValid {
 
     String message() default "invalid parameter!!";
@@ -24,7 +27,7 @@ public @interface EnumTypeValid {
 
         @Override
         public void initialize(EnumTypeValid constraintAnnotation) {
-            System.out.println("ssssssssssssssss");
+
             types = Arrays.stream(constraintAnnotation.target().getEnumConstants())
                     .map(PolymorphicEnum::getCode)
                     .collect(Collectors.toList());
@@ -32,7 +35,6 @@ public @interface EnumTypeValid {
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext context) {
-            System.out.println("ffffffffff");
             return types.contains(value);
         }
 

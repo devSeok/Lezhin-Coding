@@ -23,17 +23,17 @@ public class MemberDto {
         private UserEmail userEmail;
 
         @EnumTypeValid(target = Gender.class, message = "성별 타입은 MAN or WOMAN 이어야합니다.")
-        private Gender gender;
+        private String gender;
 
         @EnumTypeValid(target = Type.class, message = "타입은 GENERAL(일반) or ADULT(성인) 이어야합니다.")
-        private Type type;
+        private String type;
 
         public MemberEntity toEntity() {
             return MemberEntity.builder()
                     .userName(this.userName)
                     .userEmail(this.userEmail)
-                    .gender(this.gender)
-                    .type(this.type)
+                    .gender(Gender.of(this.gender))
+                    .type(Type.of(this.type))
                     .build();
         }
     }

@@ -13,13 +13,13 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class MemberApiController {
 
     private final MemberService MemberServiceImpl;
 
-    @PostMapping
+    @PostMapping("/signup")
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<ApiResponseDto<MemberDto.Res>> memberRegister(
             @Valid @RequestBody final MemberDto.MemberRegisterReqDto memberDto
@@ -32,5 +32,10 @@ public class MemberApiController {
                                 .data(new MemberDto.Res(MemberServiceImpl.memberRegister(memberDto)))
                                 .build()
                 );
+    }
+
+    @GetMapping
+    public String test() {
+        return "test";
     }
 }
