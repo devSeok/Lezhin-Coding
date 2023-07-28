@@ -18,7 +18,9 @@ public enum ErrorCode {
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
     NOT_CONVERT_ERROR(400, "C007", "convert MultipartFile to File failed"),
 
-    EXISTENT_EMAIL(404, "C008", "메일이 이미 존재합니다.");
+    EXISTENT_EMAIL(404, "C008", "메일이 이미 존재합니다."),
+    CONTENT_AMOUNT_PAY_MIN_LIMIT(400, "C009", "유료는 최소 100원부터 시작입니다."),
+    CONTENT_AMOUNT_FREE_VAILD(400, "C010", "무료는 0값이어야합니다.");
 
     private final String code;
     private final String message;

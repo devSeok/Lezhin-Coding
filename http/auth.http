@@ -4,7 +4,22 @@ Content-Type: application/json
 
 {
   "userName" : "33",
-  "userEmail" : "23333@naver.com",
+  "userEmail" : "233333@naver.com",
+  "password": "test",
   "gender" : "MAN",
   "type" : "GENERAL"
 }
+
+### 로그인
+POST localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email" : "233333@naver.com",
+  "password": "test"
+}
+> {%
+ client.global.set("authorizationToken", "Bearer " + response.body.data.accessToken);
+ client.log("AUth Token :" + client.global.get("authorizationToken"));
+ %}
+

@@ -25,15 +25,20 @@ public class MemberEntity extends BaseTimeEntity {
     private UserName userName;
     @Embedded
     private UserEmail userEmail;
+
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Enumerated(EnumType.STRING)
     private Type type;
 
     @Builder
-    public MemberEntity(UserName userName, UserEmail userEmail, Gender gender, Type type) {
+    public MemberEntity(UserName userName, UserEmail userEmail, String password, Gender gender, Type type) {
         this.userName = userName;
         this.userEmail = userEmail;
+        this.password = password;
         this.gender = gender;
         this.type = type;
     }

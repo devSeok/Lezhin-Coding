@@ -1,10 +1,11 @@
 package lezhin.coding.domain.content.service;
 
+import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
 
 public interface ContentService {
 
-    void contentRegister(ContentRegisterDto.ContentRegisterReqDto dto);
+    ContentEntity contentRegister(ContentRegisterDto dto);
 
     void contentEvaluationList();
 

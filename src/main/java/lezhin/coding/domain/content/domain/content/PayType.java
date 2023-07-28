@@ -1,24 +1,27 @@
-package lezhin.coding.domain.member.domain.entity.enums;
+package lezhin.coding.domain.content.domain.content;
 
 
+import lezhin.coding.domain.member.domain.entity.enums.Gender;
 import lezhin.coding.global.PolymorphicEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-public enum Gender implements PolymorphicEnum {
-    MAN("MAN", "남자"),
-    WOMAN("WOMAN", "여자");
+@AllArgsConstructor
+public enum PayType implements PolymorphicEnum {
+    FREE("FREE", "무료"),
+    PAY("PAY", "유료");
+
     private final String code;
     private final String title;
 
-    public static Gender of(String gender) {
+
+    public static PayType of(String gender) {
         if(gender == null) {
             throw new IllegalArgumentException();
         }
 
-        for (Gender g : Gender.values()) {
+        for (PayType g : PayType.values()) {
             if(g.code.equals(gender)) {
                 return g;
             }
@@ -26,6 +29,4 @@ public enum Gender implements PolymorphicEnum {
 
         throw new IllegalArgumentException("일치하는게 없습니다");
     }
-
-
 }

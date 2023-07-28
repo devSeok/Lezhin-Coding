@@ -1,7 +1,7 @@
-package lezhin.coding.domain.content.domain.entity;
+package lezhin.coding.domain.content.domain.evaluation;
 
 
-import lezhin.coding.domain.content.domain.entity.enums.EvaluationType;
+import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -24,9 +24,11 @@ public class EvaluationEntity extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private ContentEntity contentEntity;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
+
     @Enumerated(EnumType.STRING)
     private EvaluationType evaluationType;
 

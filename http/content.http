@@ -1,0 +1,11 @@
+### 컨텐츠 저장
+POST localhost:8080/api/content
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "content" : "33",
+  "payType" : "PAY",
+  "amount": 10,
+  "minorWorkType" : "ADULT_WORK"
+}

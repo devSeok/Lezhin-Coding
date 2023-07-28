@@ -2,8 +2,12 @@ package lezhin.coding.domain.member.api;
 
 
 import lezhin.coding.domain.member.dto.MemberDto;
+import lezhin.coding.domain.member.dto.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.MemberLoginResDto;
 import lezhin.coding.domain.member.service.MemberService;
+import lezhin.coding.global.common.response.DataResponse;
 import lezhin.coding.global.exception.response.ApiResponseDto;
+import lezhin.coding.global.jwt.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,29 +17,25 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class MemberApiController {
 
-    private final MemberService MemberServiceImpl;
+    private final MemberService memberServiceImpl;
 
     @PostMapping("/signup")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<ApiResponseDto<MemberDto.Res>> memberRegister(
+    public DataResponse<MemberDto.Res> memberSignup(
             @Valid @RequestBody final MemberDto.MemberRegisterReqDto memberDto
     ) {
-        return ResponseEntity.created(URI.create("member"))
-                .body(
-                        ApiResponseDto.<MemberDto.Res>builder()
-                                .message("생성됨")
-                                .status(HttpStatus.CREATED.value())
-                                .data(new MemberDto.Res(MemberServiceImpl.memberRegister(memberDto)))
-                                .build()
-                );
+        return DataResponse.create(new MemberDto.Res(memberServiceImpl.memberRegister(memberDto)));
     }
 
-    @GetMapping
-    public String test() {
-        return "test";
+    @PostMapping("/login")
+    @ResponseStatus(value = HttpStatus.OK)
+    public DataResponse<MemberLoginResDto> login(@Valid @RequestBody MemberLoginReqDto memberLoginReqDto) {
+
+        return DataResponse.create(MemberLoginResDto.from(memberServiceImpl.login(memberLoginReqDto)));
     }
+
 }

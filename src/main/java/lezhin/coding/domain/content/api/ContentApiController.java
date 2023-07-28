@@ -1,29 +1,36 @@
 package lezhin.coding.domain.content.api;
 
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
+import lezhin.coding.domain.content.dto.ContentRegisterResDto;
 import lezhin.coding.domain.content.service.ContentService;
+import lezhin.coding.global.common.response.DataResponse;
+import lezhin.coding.global.common.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/content")
+@RequestMapping("/api/content")
 public class ContentApiController {
 
     private final ContentService contentService;
 
     @PostMapping
-    public void contentRegister(@Valid @RequestBody ContentRegisterDto.ContentRegisterReqDto dto) {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public DataResponse<ContentRegisterResDto> contentRegister(@Valid @RequestBody ContentRegisterDto dto) {
 
-        contentService.contentRegister(dto);
+        System.out.println("============");
+        System.out.println(SecurityUtil.getCurrentMemberId());
+        System.out.println("============");
+        return DataResponse.create(ContentRegisterResDto.of(contentService.contentRegister(dto)));
+    }
 
-
-
+    @GetMapping
+    public String test() {
+        return "test";
     }
 
 }

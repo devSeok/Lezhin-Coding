@@ -1,8 +1,6 @@
-package lezhin.coding.domain.content.domain.entity;
+package lezhin.coding.domain.content.domain.content;
 
 
-import lezhin.coding.domain.content.domain.entity.embedded.Amount;
-import lezhin.coding.domain.content.domain.entity.enums.PayType;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -33,13 +31,13 @@ public class ContentEntity extends BaseTimeEntity {
     private Amount amount;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private MinorWorkType minorWorkType;
 
     @Builder
-    public ContentEntity(String content, PayType payType, Amount amount, Type type) {
+    public ContentEntity(String content, PayType payType, Amount amount, MinorWorkType minorWorkType) {
         this.content = content;
         this.payType = payType;
         this.amount = amount;
-        this.type = type;
+        this.minorWorkType = minorWorkType;
     }
 }

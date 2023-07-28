@@ -1,37 +1,45 @@
 package lezhin.coding.domain.content.dto;
 
-import lezhin.coding.domain.content.domain.entity.ContentEntity;
-import lezhin.coding.domain.content.domain.entity.embedded.Amount;
-import lezhin.coding.domain.content.domain.entity.enums.PayType;
+import lezhin.coding.domain.content.domain.content.ContentEntity;
+import lezhin.coding.domain.content.domain.content.Amount;
+import lezhin.coding.domain.content.domain.content.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.member.domain.entity.enums.Gender;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
+import lezhin.coding.global.EnumTypeValid;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentRegisterDto {
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class ContentRegisterReqDto {
 
         @NotBlank
         private String content;
 
-        private PayType payType;
+        @EnumTypeValid(target = PayType.class, message = "무료 유료는 FREE or PAY 이어야합니다.")
+        private String payType;
 
         @Valid
         private Amount amount;
-        private Type type;
+
+        @EnumTypeValid(target = MinorWorkType.class, message = "성인 , 일반 작품값은 ADULT_WORK or GENERAL_WORK 이어야합니다.")
+        private String minorWorkType;
+
+
+
 
         public ContentEntity toEntity() {
+
+
             return ContentEntity.builder()
                     .content(content)
                     .amount(amount)
-                    .type(type)
-                    .payType(payType)
+                    .minorWorkType(MinorWorkType.of(minorWorkType))
+                    .payType(PayType.of(payType))
                     .build();
         }
-    }
 }
