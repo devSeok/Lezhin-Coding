@@ -6,6 +6,17 @@ Authorization: {{ authorizationToken }}
 {
   "content" : "33",
   "payType" : "PAY",
-  "amount": 10,
+  "amount": 101,
   "minorWorkType" : "ADULT_WORK"
+}
+
+### 작품 평가
+POST localhost:8080/api/content/evaluation
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "evaluationType" : "33",
+  "comment" : "PAY",
+  "contentId": 101
 }

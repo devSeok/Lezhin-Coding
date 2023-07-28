@@ -33,8 +33,6 @@ public class ContentRegisterDto {
 
 
         public ContentEntity toEntity() {
-
-
             return ContentEntity.builder()
                     .content(content)
                     .amount(amount)

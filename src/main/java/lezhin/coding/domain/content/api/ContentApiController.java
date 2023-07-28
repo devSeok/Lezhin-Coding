@@ -2,6 +2,7 @@ package lezhin.coding.domain.content.api;
 
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
 import lezhin.coding.domain.content.dto.ContentRegisterResDto;
+import lezhin.coding.domain.content.dto.EvaluationReqDto;
 import lezhin.coding.domain.content.service.ContentService;
 import lezhin.coding.global.common.response.DataResponse;
 import lezhin.coding.global.common.utils.SecurityUtil;
@@ -22,13 +23,17 @@ public class ContentApiController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public DataResponse<ContentRegisterResDto> contentRegister(@Valid @RequestBody ContentRegisterDto dto) {
 
-        System.out.println("============");
-        System.out.println(SecurityUtil.getCurrentMemberId());
-        System.out.println("============");
         return DataResponse.create(ContentRegisterResDto.of(contentService.contentRegister(dto)));
     }
 
-    @GetMapping
+    @PostMapping("/evaluation")
+    public void evaluation(@Valid @RequestBody EvaluationReqDto dto) {
+
+        System.out.println(dto);
+    }
+
+
+    @PostMapping("/")
     public String test() {
         return "test";
     }

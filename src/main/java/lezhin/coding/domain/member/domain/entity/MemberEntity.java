@@ -1,5 +1,6 @@
 package lezhin.coding.domain.member.domain.entity;
 
+import lezhin.coding.domain.content.domain.memberEvaluation.MemberEvaluationEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.entity.enums.Gender;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +36,9 @@ public class MemberEntity extends BaseTimeEntity {
     private Gender gender;
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MemberEvaluationEntity> evaluationEntities = new ArrayList<>();
 
     @Builder
     public MemberEntity(UserName userName, UserEmail userEmail, String password, Gender gender, Type type) {
