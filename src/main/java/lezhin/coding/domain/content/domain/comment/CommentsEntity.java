@@ -5,6 +5,7 @@ import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,12 +27,19 @@ public class CommentsEntity extends BaseTimeEntity {
     @Embedded
     private Comment comment;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comments_id")
-    private List<ContentEntity> contentEntity = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "content_id")
+    private ContentEntity content;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private List<MemberEntity> memberEntity = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private MemberEntity member;
 
+
+    @Builder
+    public CommentsEntity(Comment comment, ContentEntity content, MemberEntity member) {
+        this.comment = comment;
+        this.content = content;
+        this.member = member;
+    }
 }

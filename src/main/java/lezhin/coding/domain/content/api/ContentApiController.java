@@ -1,11 +1,10 @@
 package lezhin.coding.domain.content.api;
 
-import lezhin.coding.domain.content.dto.ContentRegisterDto;
-import lezhin.coding.domain.content.dto.ContentRegisterResDto;
-import lezhin.coding.domain.content.dto.EvaluationReqDto;
+import lezhin.coding.domain.content.domain.content.ContentEntity;
+import lezhin.coding.domain.content.dto.*;
 import lezhin.coding.domain.content.service.ContentService;
+import lezhin.coding.domain.member.domain.repository.MemberRepository;
 import lezhin.coding.global.common.response.DataResponse;
-import lezhin.coding.global.common.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,7 @@ import javax.validation.Valid;
 public class ContentApiController {
 
     private final ContentService contentService;
+    private final MemberRepository memberRepository;
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -29,7 +29,21 @@ public class ContentApiController {
     @PostMapping("/evaluation")
     public void evaluation(@Valid @RequestBody EvaluationReqDto dto) {
 
-        System.out.println(dto);
+
+        contentService.evaluation(dto);
+    }
+
+    @GetMapping("/rank")
+    public void rank() {
+        contentService.sortEvaluationContent();
+    }
+
+    @PutMapping("/{contentId}/payType")
+    public DataResponse<PayTypeChangeResDto> payTypeChange(
+            @PathVariable("contentId") Long contentId,
+            @Valid @RequestBody PayTypeChangeReqDto dto
+    ) {
+        return DataResponse.create(PayTypeChangeResDto.of((contentService.payTypeChange(contentId, dto))));
     }
 
 

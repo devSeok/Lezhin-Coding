@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,7 +19,7 @@ public class EvaluationReqDto {
 
     private String comment;
 
-    @NotBlank(message = "컨텐츠 id값은 필수 입니다.")
+    @NotNull(message = "컨텐츠 id값은 필수 입니다.")
     private Long contentId;
 
 

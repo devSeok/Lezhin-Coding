@@ -5,6 +5,7 @@ import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,15 +22,23 @@ public class EvaluationEntity extends BaseTimeEntity {
     @Id
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "content_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ContentEntity contentEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private MemberEntity memberEntity;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private MemberEntity member;
 
     @Enumerated(EnumType.STRING)
     private EvaluationType evaluationType;
 
+    public void updateMember(MemberEntity member) {
+        this.member = member;
+    }
+
+    @Builder
+    public EvaluationEntity(MemberEntity member,ContentEntity contentEntity, EvaluationType evaluationType ) {
+        this.evaluationType = evaluationType;
+        this.member = member;
+        this.contentEntity = contentEntity;
+    }
 }

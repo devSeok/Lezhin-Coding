@@ -13,9 +13,9 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
     @Column(name = "content", nullable = false)
-    private Integer value;
+    private String value;
     @Builder
-    public Comment(Integer value) {
+    public Comment(String value) {
         this.value = value;
     }
 }

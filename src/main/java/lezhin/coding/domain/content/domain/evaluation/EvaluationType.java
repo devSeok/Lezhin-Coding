@@ -1,5 +1,6 @@
 package lezhin.coding.domain.content.domain.evaluation;
 
+import lezhin.coding.domain.content.domain.content.PayType;
 import lezhin.coding.global.PolymorphicEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,4 +13,18 @@ public enum EvaluationType implements PolymorphicEnum {
 
     private final String code;
     private final String title;
+
+    public static EvaluationType of(String gender) {
+        if(gender == null) {
+            throw new IllegalArgumentException();
+        }
+
+        for (EvaluationType g : EvaluationType.values()) {
+            if(g.code.equals(gender)) {
+                return g;
+            }
+        }
+
+        throw new IllegalArgumentException("일치하는게 없습니다");
+    }
 }

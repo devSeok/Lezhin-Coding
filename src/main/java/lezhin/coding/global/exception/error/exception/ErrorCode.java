@@ -20,7 +20,8 @@ public enum ErrorCode {
 
     EXISTENT_EMAIL(404, "C008", "메일이 이미 존재합니다."),
     CONTENT_AMOUNT_PAY_MIN_LIMIT(400, "C009", "유료는 최소 100원부터 시작입니다."),
-    CONTENT_AMOUNT_FREE_VAILD(400, "C010", "무료는 0값이어야합니다.");
+    CONTENT_AMOUNT_FREE_VAILD(400, "C010", "무료는 0값이어야합니다."),
+    LIKE_MAX(400, "C011", "작품에 대한 평가는 작품 당 1개만 가능합니다");
 
     private final String code;
     private final String message;

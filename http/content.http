@@ -6,7 +6,7 @@ Authorization: {{ authorizationToken }}
 {
   "content" : "33",
   "payType" : "PAY",
-  "amount": 101,
+  "amount": 110,
   "minorWorkType" : "ADULT_WORK"
 }
 
@@ -16,7 +16,25 @@ Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 {
-  "evaluationType" : "33",
-  "comment" : "PAY",
-  "contentId": 101
+  "evaluationType" : "LIKE",
+  "comment" : "댓글테스트",
+  "contentId": 1
 }
+
+
+### 작품 payType 변경
+PUT localhost:8080/api/content/1/payType
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "payType" : "PAY",
+  "amount" : 200
+}
+
+
+### 작품 랭킹
+
+GET localhost:8080/api/content/rank
+Content-Type: application/json
+Authorization: {{ authorizationToken }}

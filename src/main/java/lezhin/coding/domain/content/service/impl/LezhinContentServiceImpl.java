@@ -1,15 +1,28 @@
 package lezhin.coding.domain.content.service.impl;
 
+import lezhin.coding.domain.content.domain.comment.Comment;
+import lezhin.coding.domain.content.domain.comment.CommentRepository;
+import lezhin.coding.domain.content.domain.comment.CommentsEntity;
+import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.ContentRepository;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
+import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
+import lezhin.coding.domain.content.dto.EvaluationReqDto;
+import lezhin.coding.domain.content.dto.PayTypeChangeReqDto;
 import lezhin.coding.domain.content.service.ContentService;
+import lezhin.coding.domain.member.domain.entity.MemberEntity;
+import lezhin.coding.domain.member.domain.repository.MemberRepository;
+import lezhin.coding.global.common.utils.SecurityUtil;
 import lezhin.coding.global.exception.error.exception.ContentAmountFreeVaildException;
 import lezhin.coding.global.exception.error.exception.ContentAmountPayMinLimitException;
+import lezhin.coding.global.exception.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static lezhin.coding.domain.content.domain.content.PayType.*;
 
@@ -19,11 +32,47 @@ import static lezhin.coding.domain.content.domain.content.PayType.*;
 public class LezhinContentServiceImpl implements ContentService {
 
     private final ContentRepository contentRepository;
+    private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
     @Override
     public ContentEntity contentRegister(ContentRegisterDto dto) {
-        amountVaild(dto);
+        amountVaild(dto.getPayType(), dto.getAmount());
 
         return contentRepository.save(dto.toEntity());
+    }
+
+    @Override
+    public void evaluation(EvaluationReqDto dto) {
+
+
+        MemberEntity findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new EntityNotFoundException("값이 없습니다."));
+
+        ContentEntity findContent = contentRepository.findById(dto.getContentId())
+                        .orElseThrow(() -> new EntityNotFoundException("컨텐츠 값이 없습니다."));
+
+        EvaluationEntity buildEvaluation = EvaluationEntity.builder()
+                .contentEntity(findContent)
+                .member(findMember)
+                .evaluationType(EvaluationType.of(dto.getEvaluationType()))
+                .build();
+
+        findMember.addEvaluationEntities(buildEvaluation);
+
+        memberRepository.save(findMember);
+
+        Comment build = Comment.builder()
+                .value(dto.getComment())
+                .build();
+
+        CommentsEntity build1 = CommentsEntity.builder()
+                .comment(build)
+                .content(findContent)
+                .member(findMember)
+                .build();
+
+        commentRepository.save(build1);
+
     }
 
     @Override
@@ -39,6 +88,12 @@ public class LezhinContentServiceImpl implements ContentService {
     @Override
     public void sortEvaluationContent() {
 
+        ContentEntity byId = contentRepository.findById(1L)
+                .orElseThrow(() -> new EntityNotFoundException("없습니다"));
+
+
+        System.out.println(byId);
+
     }
 
     @Override
@@ -47,21 +102,32 @@ public class LezhinContentServiceImpl implements ContentService {
     }
 
     @Override
-    public void PayTypeChange() {
+    public ContentEntity payTypeChange(Long contentId, PayTypeChangeReqDto dto) {
 
+        ContentEntity findContent = contentRepository.findById(contentId)
+                .orElseThrow(() -> new EntityNotFoundException("컨텐츠를 찾을수 없습니다"));
+
+        amountVaild(dto.getPayType(), dto.getAmount());
+
+        findContent.payTypeChange(dto.getPayType(), dto.getAmount());
+
+
+        return contentRepository.save(findContent);
     }
 
 
-    private void amountVaild(ContentRegisterDto dto) {
-        if (dto.getPayType().equals(FREE.getCode())) {
+    private void amountVaild(String payType, Amount amount) {
 
-            if (dto.getAmount().getValue() != 0) {
+
+        if (payType.equals(FREE.getCode())) {
+
+            if (amount.getValue() != 0) {
                 throw new ContentAmountFreeVaildException("무료는 0값이어야합니다.");
             }
 
-        } else if (dto.getPayType().equals(PAY.getCode())) {
+        } else if (payType.equals(PAY.getCode())) {
 
-            if (dto.getAmount().getValue() <= 100) {
+            if (amount.getValue() < 100) {
                 throw new ContentAmountPayMinLimitException("유료는 최소 100원부터 시작입니다.");
             }
         }
