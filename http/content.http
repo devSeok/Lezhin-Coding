@@ -1,10 +1,16 @@
+### 단일 컨텐츠 불러오기
+GET localhost:8080/api/content/1
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+
 ### 컨텐츠 저장
 POST localhost:8080/api/content
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 {
-  "content" : "33",
+  "content" : "444",
   "payType" : "PAY",
   "amount": 110,
   "minorWorkType" : "ADULT_WORK"
