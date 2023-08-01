@@ -23,3 +23,4 @@ Content-Type: application/json
  client.log("AUth Token :" + client.global.get("authorizationToken"));
  %}
 
+### 회원삭제
