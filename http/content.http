@@ -37,7 +37,9 @@ Authorization: {{ authorizationToken }}
   "payType" : "PAY",
   "amount" : 200
 }
-
+### 컨텐츠 로그 확인
+GET localhost:8080/api/content/1/user-log
+Authorization: {{ authorizationToken }}
 
 ### 작품 랭킹
 

@@ -5,9 +5,11 @@ import lezhin.coding.domain.content.domain.comment.CommentRepository;
 import lezhin.coding.domain.content.domain.comment.CommentsEntity;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.ContentRepository;
+import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
 import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
 import lezhin.coding.domain.content.domain.content.dto.TuplieResult;
+import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
+import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
@@ -29,7 +31,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 import static lezhin.coding.domain.content.domain.content.PayType.*;
 
@@ -43,6 +44,7 @@ public class LezhinContentServiceImpl implements ContentService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ContentLogRepository contentLogRepository;
     @Override
     @Transactional
     public ContentEntity contentRegister(ContentRegisterDto dto) {
@@ -106,8 +108,10 @@ public class LezhinContentServiceImpl implements ContentService {
     }
 
     @Override
-    public void recentlyOneWeekMemberAdultMoreThanThreeTimes() {
+    public List<ContentLogHistoryDto> userContentSelectList(Long contentId) {
+        List<ContentLogHistoryDto> artworkViewHistoryByContentId = contentLogRepository.getArtworkViewHistoryByContentId(contentId);
 
+        return artworkViewHistoryByContentId;
     }
 
     @Override

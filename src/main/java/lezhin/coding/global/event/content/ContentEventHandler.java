@@ -1,7 +1,7 @@
 package lezhin.coding.global.event.content;
 
 import lezhin.coding.domain.content.domain.contentLog.ContentLogEntity;
-import lezhin.coding.domain.content.domain.contentLog.ContentLogRepository;
+import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
 import lezhin.coding.global.common.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;

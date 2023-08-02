@@ -2,6 +2,7 @@ package lezhin.coding.domain.content.api;
 
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
+import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.dto.*;
 import lezhin.coding.domain.content.service.ContentService;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +28,13 @@ public class ContentApiController {
         return DataResponse.create(contentService.getRowContent(contentId));
     }
 
+    @GetMapping("/{contentId}/user-log")
+    public DataResponse<List<ContentLogHistoryDto>> userContentSelectList(@PathVariable("contentId") Long contentId) {
+
+        return DataResponse.create(contentService.userContentSelectList(contentId));
+
+    }
+
     // 작품 저장
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -38,9 +47,10 @@ public class ContentApiController {
     @PostMapping("/evaluation")
     public void evaluation(@Valid @RequestBody EvaluationReqDto dto) {
 
-
         contentService.evaluation(dto);
     }
+
+
 
 
     // 좋아요가 가장 많은 작품 3개와 싫어요가 가장 만은 작품 3개를 조회하는 API
@@ -59,10 +69,5 @@ public class ContentApiController {
         return DataResponse.create(PayTypeChangeResDto.of((contentService.payTypeChange(contentId, dto))));
     }
 
-
-    @PostMapping("/")
-    public String test() {
-        return "test";
-    }
 
 }

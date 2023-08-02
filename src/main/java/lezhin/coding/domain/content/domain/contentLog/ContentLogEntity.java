@@ -20,13 +20,13 @@ public class ContentLogEntity extends BaseTimeEntity {
     @Id
     private Long id;
 
-    private Long ContentId;
+    private Long contentId;
 
-    private Long MemberId;
+    private Long memberId;
 
     @Builder
     public ContentLogEntity(Long contentId, Long memberId) {
-        ContentId = contentId;
-        MemberId = memberId;
+        this.contentId = contentId;
+        this.memberId = memberId;
     }
 }

@@ -1,4 +1,4 @@
-package lezhin.coding.domain.content.domain.content;
+package lezhin.coding.domain.content.domain.content.repository;
 
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

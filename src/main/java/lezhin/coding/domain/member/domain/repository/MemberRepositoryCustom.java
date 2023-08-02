@@ -1,13 +1,10 @@
-package lezhin.coding.domain.member.service;
+package lezhin.coding.domain.member.domain.repository;
 
 import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
 
 import java.util.List;
 
-public interface MemberService {
-
+public interface MemberRepositoryCustom {
 
     List<UserWithAdultContentResDto> findUsersWithAdultContentViews();
-
-    void memberDelete(Long memberId);
 }

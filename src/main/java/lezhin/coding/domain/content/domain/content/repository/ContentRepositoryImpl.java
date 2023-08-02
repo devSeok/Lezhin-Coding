@@ -1,15 +1,15 @@
-package lezhin.coding.domain.content.domain.content;
+package lezhin.coding.domain.content.domain.content.repository;
 
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lezhin.coding.domain.content.domain.content.QContentEntity;
 import lezhin.coding.domain.content.domain.content.dto.TuplieResult;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.domain.evaluation.QEvaluationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.querydsl.core.types.Projections.constructor;

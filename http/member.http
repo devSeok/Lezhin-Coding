@@ -1,2 +1,9 @@
+### 불러오기
+GET localhost:8080/api/member/adult/top
+Authorization: {{ authorizationToken }}
+
+
 ### 특정 사용자 삭제
 DELETE localhost:8080/api/member/1
+Authorization: {{ authorizationToken }}
+
