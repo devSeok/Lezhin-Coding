@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class MemberEntity extends BaseTimeEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     @Id
     private Long id;
     @Embedded

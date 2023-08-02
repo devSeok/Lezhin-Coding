@@ -1,5 +1,6 @@
 package lezhin.coding.domain.member.service.impl;
 
+import lezhin.coding.domain.content.domain.content.MinorWorkType;
 import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -25,7 +27,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<UserWithAdultContentResDto> findUsersWithAdultContentViews() {
-        return memberRepository.findUsersWithAdultContentViews();
+
+        LocalDateTime startDateTime = LocalDateTime.now().minusWeeks(1);
+        LocalDateTime endDateTime = LocalDateTime.now();
+        MinorWorkType minorWorkType = MinorWorkType.ADULT_WORK;
+
+        return memberRepository.findUsersWithAdultContentViews(startDateTime, endDateTime, minorWorkType);
     }
 
     @Override

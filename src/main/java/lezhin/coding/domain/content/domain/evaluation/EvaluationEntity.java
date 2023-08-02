@@ -41,4 +41,14 @@ public class EvaluationEntity extends BaseTimeEntity {
         this.member = member;
         this.contentEntity = contentEntity;
     }
+
+    public static EvaluationEntity create(MemberEntity findMember, ContentEntity findContent, String evaluationType) {
+       return EvaluationEntity.builder()
+                .contentEntity(findContent)
+                .member(findMember)
+                .evaluationType(EvaluationType.of(evaluationType))
+                .build();
+    }
+
+
 }

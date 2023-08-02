@@ -5,7 +5,7 @@ import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
 import lezhin.coding.domain.content.dto.ContentResultDto;
-import lezhin.coding.domain.content.dto.EvaluationReqDto;
+import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.dto.PayTypeChangeReqDto;
 
 import java.util.List;
@@ -16,9 +16,6 @@ public interface ContentService {
 
     void evaluation(EvaluationReqDto dto);
 
-    void contentEvaluationList();
-
-    void contentCheckMemberList();
 
     RankResultDto sortEvaluationContent();
 

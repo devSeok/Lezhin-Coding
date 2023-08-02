@@ -1,13 +1,11 @@
 package lezhin.coding.domain.content.api;
 
-import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.dto.*;
+import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.service.ContentService;
-import lezhin.coding.domain.member.domain.repository.MemberRepository;
 import lezhin.coding.global.common.response.DataResponse;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +20,14 @@ public class ContentApiController {
 
     private final ContentService contentService;
 
+    // 작품 조회
     @GetMapping("/{contentId}")
     public DataResponse<ContentResultDto> getRowContent(@PathVariable("contentId") Long contentId) {
 
         return DataResponse.create(contentService.getRowContent(contentId));
     }
 
+    // 작품별로 언제 어떤 사용자 조회 했는지 이력 조회
     @GetMapping("/{contentId}/user-log")
     public DataResponse<List<ContentLogHistoryDto>> userContentSelectList(@PathVariable("contentId") Long contentId) {
 
@@ -49,8 +49,6 @@ public class ContentApiController {
 
         contentService.evaluation(dto);
     }
-
-
 
 
     // 좋아요가 가장 많은 작품 3개와 싫어요가 가장 만은 작품 3개를 조회하는 API

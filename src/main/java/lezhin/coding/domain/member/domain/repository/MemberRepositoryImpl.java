@@ -28,7 +28,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     QContentEntity content = contentEntity;
 
     @Override
-    public List<UserWithAdultContentResDto> findUsersWithAdultContentViews() {
+    public List<UserWithAdultContentResDto> findUsersWithAdultContentViews(
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime,
+            MinorWorkType minorWorkType
+    ) {
 
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
 
@@ -40,8 +44,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .join(cl).on(m.id.eq(cl.memberId))
                 .join(content).on(cl.contentId.eq(content.id))
                 .where(
-                        cl.createdDate.between(oneWeekAgo, LocalDateTime.now())
-                                .and(content.minorWorkType.eq(MinorWorkType.ADULT_WORK))
+                        cl.createdDate.between(startDateTime, endDateTime)
+                                .and(content.minorWorkType.eq(minorWorkType))
                 )
                 .groupBy(m.id)
                 .having(cl.count().goe(3))

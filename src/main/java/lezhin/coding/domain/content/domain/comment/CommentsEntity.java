@@ -42,4 +42,12 @@ public class CommentsEntity extends BaseTimeEntity {
         this.content = content;
         this.member = member;
     }
+
+    public static CommentsEntity create( ContentEntity findContent, MemberEntity findMember, Comment comment) {
+        return CommentsEntity.builder()
+                .comment(comment)
+                .content(findContent)
+                .member(findMember)
+                .build();
+    }
 }

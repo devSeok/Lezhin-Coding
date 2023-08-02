@@ -12,6 +12,7 @@ import javax.persistence.Embeddable;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
+
     @Column(name = "content", nullable = false)
     private String value;
     @Builder

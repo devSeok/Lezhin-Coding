@@ -14,7 +14,7 @@ import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.ContentRegisterDto;
 import lezhin.coding.domain.content.dto.ContentResultDto;
-import lezhin.coding.domain.content.dto.EvaluationReqDto;
+import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.dto.PayTypeChangeReqDto;
 import lezhin.coding.domain.content.service.ContentService;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
@@ -64,37 +64,12 @@ public class LezhinContentServiceImpl implements ContentService {
         ContentEntity findContent = contentRepository.findById(dto.getContentId())
                         .orElseThrow(() -> new EntityNotFoundException("컨텐츠 값이 없습니다."));
 
-        EvaluationEntity buildEvaluation = EvaluationEntity.builder()
-                .contentEntity(findContent)
-                .member(findMember)
-                .evaluationType(EvaluationType.of(dto.getEvaluationType()))
-                .build();
-
-        findMember.addEvaluationEntities(buildEvaluation);
-
+        EvaluationEntity evaluation = EvaluationEntity.create(findMember, findContent, dto.getEvaluationType());
+        findMember.addEvaluationEntities(evaluation);
         memberRepository.save(findMember);
 
-        Comment build = Comment.builder()
-                .value(dto.getComment())
-                .build();
-
-        CommentsEntity build1 = CommentsEntity.builder()
-                .comment(build)
-                .content(findContent)
-                .member(findMember)
-                .build();
-
-        commentRepository.save(build1);
-
-    }
-
-    @Override
-    public void contentEvaluationList() {
-
-    }
-
-    @Override
-    public void contentCheckMemberList() {
+        CommentsEntity comments = CommentsEntity.create(findContent, findMember, dto.getComment());
+        commentRepository.save(comments);
 
     }
 
@@ -109,9 +84,8 @@ public class LezhinContentServiceImpl implements ContentService {
 
     @Override
     public List<ContentLogHistoryDto> userContentSelectList(Long contentId) {
-        List<ContentLogHistoryDto> artworkViewHistoryByContentId = contentLogRepository.getArtworkViewHistoryByContentId(contentId);
 
-        return artworkViewHistoryByContentId;
+        return contentLogRepository.getArtworkViewHistoryByContentId(contentId);
     }
 
     @Override
