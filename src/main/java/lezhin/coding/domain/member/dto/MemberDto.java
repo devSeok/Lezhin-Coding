@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 
 public class MemberDto {
     @Data
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor
     public static class MemberRegisterReqDto {
 
         @Valid
@@ -32,6 +32,15 @@ public class MemberDto {
 
         @EnumTypeValid(target = Type.class, message = "타입은 GENERAL(일반) or ADULT(성인) 이어야합니다.")
         private String type;
+
+        @Builder
+        public MemberRegisterReqDto(UserName userName, UserEmail userEmail, String password, String gender, String type) {
+            this.userName = userName;
+            this.userEmail = userEmail;
+            this.password = password;
+            this.gender = gender;
+            this.type = type;
+        }
 
         public MemberEntity toEntity(PasswordEncoder passwordEncoder) {
             return MemberEntity.builder()

@@ -1,5 +1,6 @@
 package lezhin.coding.domain.member.service.impl;
 
+import lezhin.coding.domain.content.domain.comment.CommentRepository;
 import lezhin.coding.domain.content.domain.content.MinorWorkType;
 import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
@@ -24,13 +25,14 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final ContentLogRepository contentLogRepository;
     private final EvaluationRepository evaluationRepository;
+    private final CommentRepository commentRepository;
 
     @Override
-    public List<UserWithAdultContentResDto> findUsersWithAdultContentViews() {
-
-        LocalDateTime startDateTime = LocalDateTime.now().minusWeeks(1);
-        LocalDateTime endDateTime = LocalDateTime.now();
-        MinorWorkType minorWorkType = MinorWorkType.ADULT_WORK;
+    public List<UserWithAdultContentResDto> findUsersWithAdultContentViews(
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime,
+            MinorWorkType minorWorkType
+    ) {
 
         return memberRepository.findUsersWithAdultContentViews(startDateTime, endDateTime, minorWorkType);
     }
@@ -43,6 +45,8 @@ public class MemberServiceImpl implements MemberService {
 
         contentLogRepository.deleteContentLogsByMemberId(findByMember.getId());
         evaluationRepository.deleteEvaluationsByMemberId(findByMember.getId());
+        commentRepository.deleteCommentsByMemberId(findByMember.getId());
+
         memberRepository.deleteById(findByMember.getId());
     }
 }

@@ -9,4 +9,5 @@ import lombok.Getter;
 public class UserWithAdultContentResDto {
     private Long memberId;
     private String userName;
+    private String userEmail;
 }

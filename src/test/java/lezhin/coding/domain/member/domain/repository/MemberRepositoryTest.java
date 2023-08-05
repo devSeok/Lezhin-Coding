@@ -46,7 +46,7 @@ class MemberRepositoryTest extends IntegrationTestSupport {
         assertThat(memberEntity.getUserEmail().getValue()).isEqualTo(email.getValue());
     }
 
-    @DisplayName("회원가입된 사용자를 이메일로 조회시 존재하지 않는다.")
+    @DisplayName("이메일 존재 여부 체크시, 존재하지 않는다.")
     @Test
     void findByUserEmailNot() {
         // given

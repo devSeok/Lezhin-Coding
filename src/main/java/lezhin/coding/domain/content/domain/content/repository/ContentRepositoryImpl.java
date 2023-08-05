@@ -37,6 +37,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                 .leftJoin(eval).on(content.id.eq(eval.contentEntity.id))
                 .groupBy(content.id)
                 .where(eval.evaluationType.eq(type))
+                .limit(3)
                 .orderBy(eval.id.count().desc())
                 .fetch();
     }

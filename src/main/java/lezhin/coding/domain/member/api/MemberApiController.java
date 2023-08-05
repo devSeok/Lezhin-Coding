@@ -1,6 +1,7 @@
 package lezhin.coding.domain.member.api;
 
 
+import lezhin.coding.domain.content.domain.content.MinorWorkType;
 import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
 import lezhin.coding.domain.member.service.MemberService;
 import lezhin.coding.global.common.response.DataResponse;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,12 @@ public class MemberApiController {
 
     @GetMapping("/adult/top")
     public DataResponse<List<UserWithAdultContentResDto>> findUsersWithAdultContentViews() {
-        return DataResponse.create(memberServiceImpl.findUsersWithAdultContentViews());
+
+        LocalDateTime startDateTime = LocalDateTime.now().minusWeeks(1);
+        LocalDateTime endDateTime = LocalDateTime.now();
+        MinorWorkType minorWorkType = MinorWorkType.ADULT_WORK;
+
+        return DataResponse.create(memberServiceImpl.findUsersWithAdultContentViews(startDateTime, endDateTime, minorWorkType));
     }
 
 

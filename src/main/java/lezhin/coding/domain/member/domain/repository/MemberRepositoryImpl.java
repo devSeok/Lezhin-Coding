@@ -34,12 +34,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
             MinorWorkType minorWorkType
     ) {
 
-        LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
-
         return query.select(Projections.constructor(
                 UserWithAdultContentResDto.class,
                 m.id,
-                m.userName.value
+                m.userName.value,
+                m.userEmail.value
         )).from(m)
                 .join(cl).on(m.id.eq(cl.memberId))
                 .join(content).on(cl.contentId.eq(content.id))

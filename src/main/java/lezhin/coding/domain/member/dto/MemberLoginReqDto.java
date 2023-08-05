@@ -1,6 +1,7 @@
 package lezhin.coding.domain.member.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class MemberLoginReqDto {
 
@@ -21,6 +21,12 @@ public class MemberLoginReqDto {
 
     @NotBlank(message = "비밀번호은 필수입니다.")
     private String password;
+
+    @Builder
+    public MemberLoginReqDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
         return new UsernamePasswordAuthenticationToken(this.email, this.password);

@@ -32,7 +32,7 @@ public class CommentsEntity extends BaseTimeEntity {
     private ContentEntity content;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "member_id")
     private MemberEntity member;
 
 

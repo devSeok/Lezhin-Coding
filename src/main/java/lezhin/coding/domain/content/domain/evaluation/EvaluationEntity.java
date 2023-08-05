@@ -22,10 +22,10 @@ public class EvaluationEntity extends BaseTimeEntity {
     @Id
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private ContentEntity contentEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private MemberEntity member;
 
     @Enumerated(EnumType.STRING)
