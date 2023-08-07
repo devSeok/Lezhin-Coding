@@ -1,6 +1,7 @@
 package lezhin.coding.domain.content.domain.contentLog;
 
 
+import lezhin.coding.global.common.utils.SecurityUtil;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,5 +29,11 @@ public class ContentLogEntity extends BaseTimeEntity {
     public ContentLogEntity(Long contentId, Long memberId) {
         this.contentId = contentId;
         this.memberId = memberId;
+    }
+    public static ContentLogEntity create(Long contentId, Long memberId) {
+      return ContentLogEntity.builder()
+                .contentId(contentId)
+                .memberId(memberId)
+                .build();
     }
 }

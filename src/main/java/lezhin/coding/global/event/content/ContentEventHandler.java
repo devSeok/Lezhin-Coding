@@ -19,11 +19,8 @@ public class ContentEventHandler {
 
     private void saveWriteHistory(final Long contentId) {
 
-        ContentLogEntity build = ContentLogEntity.builder()
-                .contentId(contentId)
-                .memberId(SecurityUtil.getCurrentMemberId())
-                .build();
+        ContentLogEntity contentLogEntity = ContentLogEntity.create(contentId, SecurityUtil.getCurrentMemberId());
 
-        contentLogRepository.save(build);
+        contentLogRepository.save(contentLogEntity);
     }
 }

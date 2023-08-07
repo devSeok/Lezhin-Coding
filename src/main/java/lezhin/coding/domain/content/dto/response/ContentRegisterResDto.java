@@ -1,27 +1,29 @@
-package lezhin.coding.domain.content.dto;
+package lezhin.coding.domain.content.dto.response;
+
 
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class PayTypeChangeResDto {
-
+@NoArgsConstructor
+public class ContentRegisterResDto {
     private Long id;
     private String payType;
     private Integer amount;
     private String minorWorkType;
 
     @Builder
-    public PayTypeChangeResDto(Long id, String payType, Integer amount, String minorWorkType) {
+    public ContentRegisterResDto(Long id, String payType, Integer amount, String minorWorkType) {
         this.id = id;
         this.payType = payType;
         this.amount = amount;
         this.minorWorkType = minorWorkType;
     }
 
-    public static PayTypeChangeResDto of(ContentEntity contentEntity) {
-        return PayTypeChangeResDto.builder()
+    public static ContentRegisterResDto of(ContentEntity contentEntity) {
+        return ContentRegisterResDto.builder()
                 .id(contentEntity.getId())
                 .payType(contentEntity.getPayType().getCode())
                 .amount(contentEntity.getAmount().getValue())

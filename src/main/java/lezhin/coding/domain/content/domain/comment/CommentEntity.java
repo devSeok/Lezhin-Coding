@@ -10,14 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Comments")
-public class CommentsEntity extends BaseTimeEntity {
+public class CommentEntity extends BaseTimeEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comments_id")
@@ -37,14 +35,14 @@ public class CommentsEntity extends BaseTimeEntity {
 
 
     @Builder
-    public CommentsEntity(Comment comment, ContentEntity content, MemberEntity member) {
+    public CommentEntity(Comment comment, ContentEntity content, MemberEntity member) {
         this.comment = comment;
         this.content = content;
         this.member = member;
     }
 
-    public static CommentsEntity create( ContentEntity findContent, MemberEntity findMember, Comment comment) {
-        return CommentsEntity.builder()
+    public static CommentEntity create(ContentEntity findContent, MemberEntity findMember, Comment comment) {
+        return CommentEntity.builder()
                 .comment(comment)
                 .content(findContent)
                 .member(findMember)

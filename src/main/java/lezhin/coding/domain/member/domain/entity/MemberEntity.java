@@ -41,11 +41,12 @@ public class MemberEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<EvaluationEntity> evaluationEntities = new ArrayList<>();
 
     @Builder
-    public MemberEntity(UserName userName, UserEmail userEmail, String password, Gender gender, Type type) {
+    public MemberEntity(Long id, UserName userName, UserEmail userEmail, String password, Gender gender, Type type) {
+        this.id = id;
         this.userName = userName;
         this.userEmail = userEmail;
         this.password = password;
@@ -57,9 +58,10 @@ public class MemberEntity extends BaseTimeEntity {
 
         this.evaluationEntities.add(evaluationEntity);
 
-//        if (evaluationEntities.size() > 1) {
-//            throw new LikeMaxVaildException("작품에 대한 평가는 작품 당 1개만 가능합니다");
-//        }
+        int MaxWorkEvaluation = 1;
+        if (evaluationEntities.size() > MaxWorkEvaluation) {
+            throw new LikeMaxVaildException("작품에 대한 평가는 작품 당 1개만 가능합니다");
+        }
 
         evaluationEntity.updateMember(this);
     }

@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepository extends JpaRepository<CommentsEntity, Long> {
+public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 
     @Modifying
-    @Query(value = "delete from CommentsEntity c where c.member.id = :memberId")
+    @Query(value = "delete from CommentEntity c where c.member.id = :memberId")
     void deleteCommentsByMemberId(@Param("memberId") Long memberId);
 }

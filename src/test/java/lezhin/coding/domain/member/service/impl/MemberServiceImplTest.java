@@ -2,8 +2,8 @@ package lezhin.coding.domain.member.service.impl;
 
 import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.domain.content.domain.comment.Comment;
+import lezhin.coding.domain.content.domain.comment.CommentEntity;
 import lezhin.coding.domain.content.domain.comment.CommentRepository;
-import lezhin.coding.domain.content.domain.comment.CommentsEntity;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.MinorWorkType;
@@ -19,7 +19,6 @@ import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
 import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
 import lezhin.coding.domain.member.service.MemberService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceImplTest extends IntegrationTestSupport {
 
@@ -110,7 +108,7 @@ class MemberServiceImplTest extends IntegrationTestSupport {
         evaluationRepository.save(evaluationEntity);
 
         Comment commentBuild = Comment.builder().value("test").build();
-        CommentsEntity commentSave = CommentsEntity.create(contentSave, saveMember, commentBuild);
+        CommentEntity commentSave = CommentEntity.create(contentSave, saveMember, commentBuild);
         commentRepository.save(commentSave);
 
         //when

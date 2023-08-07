@@ -10,7 +10,6 @@ import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 class CommentRepositoryTest extends IntegrationTestSupport {
@@ -47,7 +45,7 @@ class CommentRepositoryTest extends IntegrationTestSupport {
         ContentEntity saveContent = contentRepository.save(content);
 
         Comment comment = Comment.builder().value("test").build();
-        CommentsEntity comments = CommentsEntity.create(saveContent, saveMember, comment);
+        CommentEntity comments = CommentEntity.create(saveContent, saveMember, comment);
         commentRepository.save(comments);
 
 

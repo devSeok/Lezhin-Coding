@@ -3,7 +3,12 @@ package lezhin.coding.domain.content.api;
 import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.dto.*;
+import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
+import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
+import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
+import lezhin.coding.domain.content.dto.response.EvaluationRegisterResDto;
+import lezhin.coding.domain.content.dto.response.PayTypeChangeResDto;
 import lezhin.coding.domain.content.service.ContentService;
 import lezhin.coding.global.common.response.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,16 +43,17 @@ public class ContentApiController {
     // 작품 저장
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public DataResponse<ContentRegisterResDto> contentRegister(@Valid @RequestBody ContentRegisterDto dto) {
+    public DataResponse<ContentRegisterResDto> contentRegister(@Valid @RequestBody ContentRegisterReqDto dto) {
 
-        return DataResponse.create(ContentRegisterResDto.of(contentService.contentRegister(dto)));
+        return DataResponse.create(contentService.contentRegister(dto));
     }
 
     // 작품 평가
     @PostMapping("/evaluation")
-    public void evaluation(@Valid @RequestBody EvaluationReqDto dto) {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public DataResponse<EvaluationRegisterResDto> evaluation(@Valid @RequestBody EvaluationReqDto dto) {
 
-        contentService.evaluation(dto);
+        return DataResponse.create(contentService.evaluation(dto));
     }
 
 

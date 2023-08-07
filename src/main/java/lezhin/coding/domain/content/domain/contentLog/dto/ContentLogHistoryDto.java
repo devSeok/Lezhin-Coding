@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ContentLogHistoryDto {
 
-    private UserName userName;
-    private UserEmail userEmail;
+    private String userName;
+    private String userEmail;
     private String content;
     private LocalDateTime createDate;
 }

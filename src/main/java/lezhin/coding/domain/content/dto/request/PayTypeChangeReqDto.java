@@ -1,4 +1,4 @@
-package lezhin.coding.domain.content.dto;
+package lezhin.coding.domain.content.dto.request;
 
 
 import lezhin.coding.domain.content.domain.content.Amount;

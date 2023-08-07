@@ -1,17 +1,13 @@
 package lezhin.coding.domain.content.dto.request;
 
 import lezhin.coding.domain.content.domain.comment.Comment;
-import lezhin.coding.domain.content.domain.comment.CommentsEntity;
-import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.PayType;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
-import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.global.EnumTypeValid;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -27,5 +23,10 @@ public class EvaluationReqDto {
     private Long contentId;
 
 
-
+    @Builder
+    public EvaluationReqDto(String evaluationType, Comment comment, Long contentId) {
+        this.evaluationType = evaluationType;
+        this.comment = comment;
+        this.contentId = contentId;
+    }
 }

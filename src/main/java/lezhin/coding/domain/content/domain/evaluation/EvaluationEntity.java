@@ -23,9 +23,11 @@ public class EvaluationEntity extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "content_id")
     private ContentEntity contentEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private MemberEntity member;
 
     @Enumerated(EnumType.STRING)

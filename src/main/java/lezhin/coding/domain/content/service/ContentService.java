@@ -3,18 +3,20 @@ package lezhin.coding.domain.content.service;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
-import lezhin.coding.domain.content.dto.ContentRegisterDto;
+import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.ContentResultDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
-import lezhin.coding.domain.content.dto.PayTypeChangeReqDto;
+import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
+import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
+import lezhin.coding.domain.content.dto.response.EvaluationRegisterResDto;
 
 import java.util.List;
 
 public interface ContentService {
 
-    ContentEntity contentRegister(ContentRegisterDto dto);
+    ContentRegisterResDto contentRegister(ContentRegisterReqDto dto);
 
-    void evaluation(EvaluationReqDto dto);
+    EvaluationRegisterResDto evaluation(EvaluationReqDto dto);
 
 
     RankResultDto sortEvaluationContent();

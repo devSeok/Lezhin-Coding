@@ -36,8 +36,8 @@ public class ContentLogRepositoryImpl implements ContentLogRepositoryCustom{
         return query.select(
                 constructor(
                         ContentLogHistoryDto.class,
-                        m.userName,
-                        m.userEmail,
+                        m.userName.value,
+                        m.userEmail.value,
                         c.content,
                         cl.createdDate
                 ))
@@ -47,12 +47,5 @@ public class ContentLogRepositoryImpl implements ContentLogRepositoryCustom{
                 .orderBy(cl.id.desc())
                 .fetch();
 
-    }
-
-    private BooleanExpression oneWeekAgo() {
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneWeekAgo = now.minusWeeks(1);
-        return cl.createdDate.between(oneWeekAgo, now);
     }
 }

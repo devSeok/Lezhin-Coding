@@ -1,8 +1,7 @@
 package lezhin.coding.domain.content.service.impl;
 
-import lezhin.coding.domain.content.domain.comment.Comment;
 import lezhin.coding.domain.content.domain.comment.CommentRepository;
-import lezhin.coding.domain.content.domain.comment.CommentsEntity;
+import lezhin.coding.domain.content.domain.comment.CommentEntity;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
@@ -12,18 +11,18 @@ import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepos
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
-import lezhin.coding.domain.content.dto.ContentRegisterDto;
+import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.ContentResultDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
-import lezhin.coding.domain.content.dto.PayTypeChangeReqDto;
+import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
+import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
+import lezhin.coding.domain.content.dto.response.EvaluationRegisterResDto;
 import lezhin.coding.domain.content.service.ContentService;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
 import lezhin.coding.global.common.utils.SecurityUtil;
 import lezhin.coding.global.event.content.ContentEvent;
-import lezhin.coding.global.exception.error.exception.ContentAmountFreeVaildException;
-import lezhin.coding.global.exception.error.exception.ContentAmountPayMinLimitException;
-import lezhin.coding.global.exception.error.exception.EntityNotFoundException;
+import lezhin.coding.global.exception.error.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Primary;
@@ -47,30 +46,29 @@ public class LezhinContentServiceImpl implements ContentService {
     private final ContentLogRepository contentLogRepository;
     @Override
     @Transactional
-    public ContentEntity contentRegister(ContentRegisterDto dto) {
+    public ContentRegisterResDto contentRegister(ContentRegisterReqDto dto) {
         amountVaild(dto.getPayType(), dto.getAmount());
 
-        return contentRepository.save(dto.toEntity());
+        return ContentRegisterResDto.of(contentRepository.save(dto.toEntity()));
     }
 
     @Override
     @Transactional
-    public void evaluation(EvaluationReqDto dto) {
-
+    public EvaluationRegisterResDto evaluation(EvaluationReqDto dto) {
 
         MemberEntity findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new EntityNotFoundException("값이 없습니다."));
+                .orElseThrow(() -> new UserNotException("유저 정보가 없습니다."));
 
         ContentEntity findContent = contentRepository.findById(dto.getContentId())
-                        .orElseThrow(() -> new EntityNotFoundException("컨텐츠 값이 없습니다."));
+                        .orElseThrow(() -> new ContentNotException("컨텐츠 정보가 없습니다."));
 
         EvaluationEntity evaluation = EvaluationEntity.create(findMember, findContent, dto.getEvaluationType());
         findMember.addEvaluationEntities(evaluation);
         memberRepository.save(findMember);
 
-        CommentsEntity comments = CommentsEntity.create(findContent, findMember, dto.getComment());
-        commentRepository.save(comments);
+        CommentEntity comments = CommentEntity.create(findContent, findMember, dto.getComment());
 
+        return EvaluationRegisterResDto.of(commentRepository.save(comments));
     }
 
     @Override
@@ -113,15 +111,11 @@ public class LezhinContentServiceImpl implements ContentService {
 
     private void amountVaild(String payType, Amount amount) {
 
-
-        if (payType.equals(FREE.getCode())) {
-
+        if (FREE.getCode().equals(payType)) {
             if (amount.getValue() != 0) {
                 throw new ContentAmountFreeVaildException("무료는 0값이어야합니다.");
             }
-
-        } else if (payType.equals(PAY.getCode())) {
-
+        } else if (PAY.getCode().equals(payType)) {
             if (amount.getValue() < 100) {
                 throw new ContentAmountPayMinLimitException("유료는 최소 100원부터 시작입니다.");
             }
