@@ -1,4 +1,4 @@
-package lezhin.coding.domain.member.dto;
+package lezhin.coding.domain.member.dto.reponse;
 
 
 import lombok.AllArgsConstructor;

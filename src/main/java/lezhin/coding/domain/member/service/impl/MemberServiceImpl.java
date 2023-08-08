@@ -6,7 +6,7 @@ import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepos
 import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
-import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
+import lezhin.coding.domain.member.dto.reponse.UserWithAdultContentResDto;
 import lezhin.coding.domain.member.service.MemberService;
 import lezhin.coding.global.exception.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

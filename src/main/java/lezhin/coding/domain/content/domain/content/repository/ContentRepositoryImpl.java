@@ -26,7 +26,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
     QEvaluationEntity eval = evaluationEntity;
 
     @Override
-    public List<TuplieResult> likeList(EvaluationType type) {
+    public List<TuplieResult> likeList(EvaluationType type, int limit) {
         return query.select(Projections.constructor(
                         TuplieResult.class,
                         content.id,
@@ -37,7 +37,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                 .leftJoin(eval).on(content.id.eq(eval.contentEntity.id))
                 .groupBy(content.id)
                 .where(eval.evaluationType.eq(type))
-                .limit(3)
+                .limit(limit)
                 .orderBy(eval.id.count().desc())
                 .fetch();
     }

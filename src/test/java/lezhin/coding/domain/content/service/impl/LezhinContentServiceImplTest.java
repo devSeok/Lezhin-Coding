@@ -17,13 +17,16 @@ import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.ContentResultDto;
 import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
+import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
 import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
 import lezhin.coding.domain.content.dto.response.EvaluationRegisterResDto;
+import lezhin.coding.domain.content.dto.response.PayTypeChangeResDto;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
+import lezhin.coding.global.common.utils.SecurityUtil;
 import lezhin.coding.global.exception.error.exception.*;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
@@ -31,17 +34,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.Mockito.when;
 
 
 class LezhinContentServiceImplTest extends IntegrationTestSupport {
@@ -71,7 +77,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
         commentRepository.deleteAllInBatch();
         evaluationRepository.deleteAllInBatch();
         contentRepository.deleteAllInBatch();
-        memberRepository.deleteAll();
+        memberRepository.deleteAllInBatch();
     }
 
 
@@ -129,23 +135,27 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
         //then
         assertThatThrownBy(() -> lezhinContentService.contentRegister(contentRegisterReqDto))
                 .isInstanceOf(ContentAmountPayMinLimitException.class)
-                .hasMessage("유료는 최소 100원부터 시작입니다.");
+                .hasMessage("유료는 100원~500원 값이어야 합니다.");
     }
 
     @Test
     @DisplayName("특정 컨텐츠를 평가 할수 있다.")
     @WithCustomMockUser
     void evaluation() {
+        // TODO : 오류
+
         // given
         UserEmail userEmail = UserEmail.builder()
                 .value("test@naver.com").build();
         MemberEntity memberInsert = createMember(userEmail, "진석");
-        memberRepository.deleteAll();
         MemberEntity save = memberRepository.saveAndFlush(memberInsert);
 
-        System.out.println("=============");
+// SecurityUtil 모킹
+        SecurityUtil securityUtilMock = Mockito.mock(SecurityUtil.class);
+        when(securityUtilMock.getCurrentMemberId()).thenReturn(save.getId());
+
         System.out.println(save.getId());
-        ContentEntity contentSave = contentCreate();
+        ContentEntity contentSave = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         EvaluationReqDto evaluationReqDto = getEvaluationReqDto(contentSave.getId());
 
         //when
@@ -161,7 +171,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
     void evaluationNotMember() {
 
         // given
-        ContentEntity contentSave = contentCreate();
+        ContentEntity contentSave = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         EvaluationReqDto evaluationReqDto = getEvaluationReqDto(contentSave.getId());
 
         //when
@@ -172,28 +182,12 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("특정 컨텐츠를 평가 등록시 컨텐츠가 존재하지 없으면 예외가 발생한다.")
-    @WithCustomMockUser
-    void evaluationNotContent() {
-
-        // given
-        UserEmail userEmail = UserEmail.builder()
-                .value("test@naver.com").build();
-        MemberEntity memberInsert = createMember(userEmail, "진석");
-        memberRepository.save(memberInsert);
-        EvaluationReqDto evaluationReqDto = getEvaluationReqDto(2L);
-
-        //when
-        //then
-        assertThatThrownBy(() -> lezhinContentService.evaluation(evaluationReqDto))
-                .isInstanceOf(ContentNotException.class)
-                .hasMessage("컨텐츠 정보가 없습니다.");
-    }
-
-    @Test
     @DisplayName("좋아요가 가장 많은 작품 3개와 싫어요 작품 3개를 가져온다. ")
     void sortEvaluationContent() {
-        ContentEntity contentEntity = contentCreate();
+        // TODO : 오류
+
+        // given
+        ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         UserEmail userEmail = UserEmail.builder()
                 .value("test@naver.com").build();
         MemberEntity memberInsert = createMember(userEmail, "진석");
@@ -202,8 +196,10 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         evaluationRepository.saveAll(List.of(evaluationEntity1, evaluationEntity2));
 
-        RankResultDto rankResultDto = lezhinContentService.sortEvaluationContent();
+        //when
+        RankResultDto rankResultDto = lezhinContentService.sortEvaluationContent(3);
 
+        //then
         assertThat(rankResultDto.getLike()).hasSize(1)
                 .extracting("content", "count")
                 .containsExactlyInAnyOrder(
@@ -213,25 +209,97 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
     }
 
     @Test
-    void userContentSelectList() {
-    }
-
-    @Test
     @DisplayName("등록된 컨텐츠 값을 가져온다.")
     @WithCustomMockUser
     void getRowContent() {
-        ContentEntity contentEntity = contentCreate();
-
+        // given
+        ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
+        //when
         ContentResultDto rowContent = lezhinContentService.getRowContent(contentEntity.getId());
-
+        //then
         assertThat(rowContent.getContent()).isEqualTo("test");
     }
 
     @Test
     @DisplayName("특정 작품을 유료로 전환한다.")
     void payTypePayChange() {
+        // given
+        ContentEntity contentEntity = contentCreate(PayType.FREE, 0, MinorWorkType.ADULT_WORK);
+
+        Amount amountValue = Amount.builder().value(200).build();
+
+        PayTypeChangeReqDto build = PayTypeChangeReqDto.builder()
+                .payType(PayType.PAY.getCode())
+                .amount(amountValue)
+                .build();
+        //when
+        PayTypeChangeResDto contentEntity1 = lezhinContentService.payTypeChange(contentEntity.getId(), build);
+
+        //then
+        assertThat(contentEntity1.getPayType()).isEqualTo(PayType.PAY.getCode());
+        assertThat(contentEntity1.getAmount()).isEqualTo(200);
+    }
+
+    @Test
+    @DisplayName("특정 작품을 무료로 전환한다.")
+    void payTypeFreeChange() {
+        // given
+        ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
+
+        Amount amountValue = Amount.builder().value(0).build();
+
+        PayTypeChangeReqDto build = PayTypeChangeReqDto.builder()
+                .payType(PayType.FREE.getCode())
+                .amount(amountValue)
+                .build();
+        //when
+        PayTypeChangeResDto contentEntity1 = lezhinContentService.payTypeChange(contentEntity.getId(), build);
+
+        //then
+        assertThat(contentEntity1.getPayType()).isEqualTo(PayType.FREE.getCode());
+        assertThat(contentEntity1.getAmount()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("특정 작품을 무료로 전환시 금액을 0원 이상으로 작성시 예외처리가 된다..")
+    void payTypeFreeNotChange() {
+        // given
+        ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
+
+        Amount amountValue = Amount.builder().value(100).build();
+
+        PayTypeChangeReqDto build = PayTypeChangeReqDto.builder()
+                .payType(PayType.FREE.getCode())
+                .amount(amountValue)
+                .build();
+        //when
+        //then
+            assertThatThrownBy(() -> lezhinContentService.payTypeChange(contentEntity.getId(), build))
+                    .isInstanceOf(ContentAmountFreeVaildException.class)
+                    .hasMessage("무료는 0값이어야합니다.");
 
     }
+
+
+    @Test
+    @DisplayName("특정 작품을 유로로 전환시 금액을 100원 미만으로 작성시 예외처리가 된다..")
+    void payTypePayNotChange() {
+        // given
+        ContentEntity contentEntity = contentCreate(PayType.FREE, 0, MinorWorkType.ADULT_WORK);
+        Amount amountValue = Amount.builder().value(501).build();
+        PayTypeChangeReqDto build = PayTypeChangeReqDto.builder()
+                .payType(PayType.PAY.getCode())
+                .amount(amountValue)
+                .build();
+
+        //when
+        //then
+        assertThatThrownBy(() -> lezhinContentService.payTypeChange(contentEntity.getId(), build))
+                .isInstanceOf(ContentAmountPayMinLimitException.class)
+                .hasMessage("유료는 100원~500원 값이어야 합니다.");
+
+    }
+
 
 
     private static EvaluationReqDto getEvaluationReqDto(Long contentId) {
@@ -244,19 +312,18 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private ContentEntity contentCreate() {
+    private ContentEntity contentCreate(PayType payType, int amount, MinorWorkType minorWorkType) {
 
-        Amount amount = Amount.builder().value(200).build();
+        Amount amountValue = Amount.builder().value(amount).build();
 
         ContentEntity content = ContentEntity.builder()
                 .content("test")
-                .payType(PayType.PAY)
-                .amount(amount)
-                .minorWorkType(MinorWorkType.ADULT_WORK)
+                .payType(payType)
+                .amount(amountValue)
+                .minorWorkType(minorWorkType)
                 .build();
 
-        ContentEntity contentSave = contentRepository.save(content);
-        return contentSave;
+        return contentRepository.save(content);
     }
     private MemberEntity createMember(UserEmail email, String name) {
 

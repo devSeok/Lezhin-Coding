@@ -7,23 +7,21 @@ import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.entity.enums.Gender;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
-import lezhin.coding.domain.member.dto.MemberDto;
-import lezhin.coding.domain.member.dto.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.reponse.MemberLoginResDto;
+import lezhin.coding.domain.member.dto.reponse.MemberSignupResDto;
+import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
 import lezhin.coding.global.jwt.dto.TokenDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AuthServiceImplTest extends IntegrationTestSupport {
 
@@ -51,15 +49,15 @@ class AuthServiceImplTest extends IntegrationTestSupport {
         UserEmail userEmail = UserEmail.builder()
                 .value("test@naver.com").build();
 
-        MemberDto.MemberRegisterReqDto memberDto = getMemberRegisterReqDto(userName, userEmail);
+        MemberSignupReqDto memberDto = getMemberRegisterReqDto(userName, userEmail);
         //when
-        MemberEntity memberEntity = authServiceImpl.memberRegister(memberDto);
+        MemberSignupResDto memberEntity = authServiceImpl.memberSignup(memberDto);
         //then
 
-        assertThat(memberEntity.getId()).isNotNull();
+        assertThat(memberEntity.getUserEmail()).isNotNull();
         assertThat(memberEntity)
-                .extracting("userName", "userEmail", "gender", "type")
-                .contains(userName, userEmail, Gender.MAN, Type.ADULT);
+                .extracting("userName", "userEmail")
+                .contains(userName.getValue(), userEmail.getValue());
     }
 
     @DisplayName("회원가입 정보를 받아 회원 생성시 이메일 중복 체크를 한다")
@@ -74,11 +72,11 @@ class AuthServiceImplTest extends IntegrationTestSupport {
         UserName userName = UserName.builder()
                 .value("오진석").build();
 
-        MemberDto.MemberRegisterReqDto memberDto = getMemberRegisterReqDto(userName, userEmail);
+        MemberSignupReqDto memberDto = getMemberRegisterReqDto(userName, userEmail);
 
         //when
         //then
-        assertThatThrownBy(() -> authServiceImpl.memberRegister(memberDto))
+        assertThatThrownBy(() -> authServiceImpl.memberSignup(memberDto))
                 .isInstanceOf(EmailDuplicationException.class)
                 .hasMessage("메일이 존재합니다");
     }
@@ -97,7 +95,7 @@ class AuthServiceImplTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        TokenDto tokenDto = authServiceImpl.login(memberLoginReqDto);
+        MemberLoginResDto tokenDto = authServiceImpl.login(memberLoginReqDto);
 
         //then
         assertThat(tokenDto.getAccessToken()).isNotNull();
@@ -165,8 +163,8 @@ class AuthServiceImplTest extends IntegrationTestSupport {
 
 
 
-    private  MemberDto.MemberRegisterReqDto getMemberRegisterReqDto(UserName userName, UserEmail userEmail) {
-        return MemberDto.MemberRegisterReqDto.builder()
+    private MemberSignupReqDto getMemberRegisterReqDto(UserName userName, UserEmail userEmail) {
+        return MemberSignupReqDto.builder()
                 .userName(userName)
                 .userEmail(userEmail)
                 .password("test")

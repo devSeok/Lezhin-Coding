@@ -1,13 +1,15 @@
 package lezhin.coding.domain.member.service;
 
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
-import lezhin.coding.domain.member.dto.MemberDto;
-import lezhin.coding.domain.member.dto.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.reponse.MemberLoginResDto;
+import lezhin.coding.domain.member.dto.reponse.MemberSignupResDto;
+import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.global.jwt.dto.TokenDto;
 
 public interface AuthService {
 
-    MemberEntity memberRegister(MemberDto.MemberRegisterReqDto memberDto);
-    TokenDto login(MemberLoginReqDto memberLoginReqDto);
+    MemberSignupResDto memberSignup(MemberSignupReqDto memberDto);
+    MemberLoginResDto login(MemberLoginReqDto memberLoginReqDto);
 
 }

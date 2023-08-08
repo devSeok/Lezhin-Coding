@@ -58,10 +58,12 @@ public class ContentApiController {
 
 
     // 좋아요가 가장 많은 작품 3개와 싫어요가 가장 만은 작품 3개를 조회하는 API
-    @GetMapping("/rank")
-    public DataResponse<RankResultDto> rank() {
+    @GetMapping("/ranking")
+    public DataResponse<RankResultDto> ranking(@RequestParam(
+            value = "limit", required = false, defaultValue = "3") int limit
+    ) {
 
-        return DataResponse.create(contentService.sortEvaluationContent());
+        return DataResponse.create(contentService.sortEvaluationContent(limit));
     }
 
     // 특정 작품을 유료 ,무료로 변경할 수 있는 api
@@ -70,7 +72,7 @@ public class ContentApiController {
             @PathVariable("contentId") Long contentId,
             @Valid @RequestBody PayTypeChangeReqDto dto
     ) {
-        return DataResponse.create(PayTypeChangeResDto.of((contentService.payTypeChange(contentId, dto))));
+        return DataResponse.create((contentService.payTypeChange(contentId, dto)));
     }
 
 

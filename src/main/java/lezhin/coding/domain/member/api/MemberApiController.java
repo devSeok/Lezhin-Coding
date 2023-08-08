@@ -2,7 +2,7 @@ package lezhin.coding.domain.member.api;
 
 
 import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
+import lezhin.coding.domain.member.dto.reponse.UserWithAdultContentResDto;
 import lezhin.coding.domain.member.service.MemberService;
 import lezhin.coding.global.common.response.DataResponse;
 import lombok.RequiredArgsConstructor;

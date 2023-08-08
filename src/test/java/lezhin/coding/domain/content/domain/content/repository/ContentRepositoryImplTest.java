@@ -57,7 +57,7 @@ class ContentRepositoryImplTest extends IntegrationTestSupport {
         EvaluationEntity evaluationEntity2 = EvaluationEntity.create(save1, save, EvaluationType.LIKE.getCode());
         evaluationRepository.saveAll(List.of(evaluationEntity1, evaluationEntity2));
         //when
-        List<TuplieResult> tuplieResults = contentRepository.likeList(EvaluationType.LIKE);
+        List<TuplieResult> tuplieResults = contentRepository.likeList(EvaluationType.LIKE, 3);
 
         //then
         Assertions.assertThat(tuplieResults).hasSize(1)

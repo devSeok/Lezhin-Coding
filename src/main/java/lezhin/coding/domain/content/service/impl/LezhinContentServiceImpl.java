@@ -17,6 +17,7 @@ import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
 import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
 import lezhin.coding.domain.content.dto.response.EvaluationRegisterResDto;
+import lezhin.coding.domain.content.dto.response.PayTypeChangeResDto;
 import lezhin.coding.domain.content.service.ContentService;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
@@ -47,7 +48,7 @@ public class LezhinContentServiceImpl implements ContentService {
     @Override
     @Transactional
     public ContentRegisterResDto contentRegister(ContentRegisterReqDto dto) {
-        amountVaild(dto.getPayType(), dto.getAmount());
+        validateAmount(dto.getPayType(), dto.getAmount());
 
         return ContentRegisterResDto.of(contentRepository.save(dto.toEntity()));
     }
@@ -72,10 +73,10 @@ public class LezhinContentServiceImpl implements ContentService {
     }
 
     @Override
-    public RankResultDto sortEvaluationContent() {
+    public RankResultDto sortEvaluationContent(int limit) {
 
-        List<TuplieResult> topLikeList  = contentRepository.likeList(EvaluationType.LIKE);
-        List<TuplieResult> topBadList  = contentRepository.likeList(EvaluationType.BAD);
+        List<TuplieResult> topLikeList  = contentRepository.likeList(EvaluationType.LIKE, limit);
+        List<TuplieResult> topBadList  = contentRepository.likeList(EvaluationType.BAD, limit);
 
        return RankResultDto.of(topLikeList, topBadList);
     }
@@ -98,27 +99,33 @@ public class LezhinContentServiceImpl implements ContentService {
 
     @Override
     @Transactional
-    public ContentEntity payTypeChange(Long contentId, PayTypeChangeReqDto dto) {
+    public PayTypeChangeResDto payTypeChange(Long contentId, PayTypeChangeReqDto dto) {
 
         ContentEntity findContent = contentRepository.findById(contentId)
                 .orElseThrow(() -> new EntityNotFoundException("컨텐츠를 찾을수 없습니다"));
-        amountVaild(dto.getPayType(), dto.getAmount());
+        validateAmount(dto.getPayType(), dto.getAmount());
         findContent.payTypeChange(dto.getPayType(), dto.getAmount());
 
-        return contentRepository.save(findContent);
+        return PayTypeChangeResDto.of(contentRepository.save(findContent));
     }
 
 
-    private void amountVaild(String payType, Amount amount) {
+    private void validateAmount(String payType, Amount amount) {
+        int amountValue = amount.getValue();
 
-        if (FREE.getCode().equals(payType)) {
-            if (amount.getValue() != 0) {
-                throw new ContentAmountFreeVaildException("무료는 0값이어야합니다.");
-            }
-        } else if (PAY.getCode().equals(payType)) {
-            if (amount.getValue() < 100) {
-                throw new ContentAmountPayMinLimitException("유료는 최소 100원부터 시작입니다.");
-            }
+        switch (payType) {
+            case "FREE" :
+                if (amountValue != 0) {
+                    throw new ContentAmountFreeVaildException("무료는 0값이어야합니다.");
+                }
+                break;
+            case "PAY" :
+                if (amountValue < 100 || amountValue > 500) {
+                    throw new ContentAmountPayMinLimitException("유료는 100원~500원 값이어야 합니다.");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("유효하지 않은 payType 입니다.");
         }
     }
 }

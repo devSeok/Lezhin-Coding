@@ -1,6 +1,5 @@
-package lezhin.coding.domain.member.dto;
+package lezhin.coding.domain.member.dto.reponse;
 
-import lezhin.coding.global.jwt.dto.MemberLoginTokenResDto;
 import lezhin.coding.global.jwt.dto.TokenDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

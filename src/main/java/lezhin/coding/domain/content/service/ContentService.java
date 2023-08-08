@@ -9,6 +9,7 @@ import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
 import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
 import lezhin.coding.domain.content.dto.response.EvaluationRegisterResDto;
+import lezhin.coding.domain.content.dto.response.PayTypeChangeResDto;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ public interface ContentService {
     EvaluationRegisterResDto evaluation(EvaluationReqDto dto);
 
 
-    RankResultDto sortEvaluationContent();
+    RankResultDto sortEvaluationContent(int limit);
 
     List<ContentLogHistoryDto> userContentSelectList(Long contentId);
 
     ContentResultDto getRowContent(Long contentId);
 
-    ContentEntity payTypeChange( Long contentId, PayTypeChangeReqDto dto);
+    PayTypeChangeResDto payTypeChange(Long contentId, PayTypeChangeReqDto dto);
 }

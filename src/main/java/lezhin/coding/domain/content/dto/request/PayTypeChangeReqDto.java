@@ -5,6 +5,7 @@ import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.PayType;
 import lezhin.coding.global.EnumTypeValid;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +20,10 @@ public class PayTypeChangeReqDto {
 
     @Valid
     private Amount amount;
+
+    @Builder
+    public PayTypeChangeReqDto(String payType, Amount amount) {
+        this.payType = payType;
+        this.amount = amount;
+    }
 }

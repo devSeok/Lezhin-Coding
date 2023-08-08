@@ -11,7 +11,7 @@ import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepos
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
-import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
+import lezhin.coding.domain.member.dto.reponse.UserWithAdultContentResDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

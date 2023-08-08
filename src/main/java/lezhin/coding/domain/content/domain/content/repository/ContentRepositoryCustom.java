@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ContentRepositoryCustom {
 
-    List<TuplieResult> likeList(EvaluationType type);
+    List<TuplieResult> likeList(EvaluationType type, int limit);
 
 }

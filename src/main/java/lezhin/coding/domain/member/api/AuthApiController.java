@@ -1,9 +1,11 @@
 package lezhin.coding.domain.member.api;
 
 
-import lezhin.coding.domain.member.dto.MemberDto;
-import lezhin.coding.domain.member.dto.MemberLoginReqDto;
-import lezhin.coding.domain.member.dto.MemberLoginResDto;
+
+import lezhin.coding.domain.member.dto.reponse.MemberSignupResDto;
+import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.reponse.MemberLoginResDto;
+import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.common.response.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,17 +23,17 @@ public class AuthApiController {
 
     @PostMapping("/signup")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public DataResponse<MemberDto.Res> memberSignup(
-            @Valid @RequestBody final MemberDto.MemberRegisterReqDto memberDto
+    public DataResponse<MemberSignupResDto> memberSignup(
+            @Valid @RequestBody final MemberSignupReqDto memberDto
     ) {
-        return DataResponse.create(new MemberDto.Res(authServiceImpl.memberRegister(memberDto)));
+        return DataResponse.create(authServiceImpl.memberSignup(memberDto));
     }
 
     @PostMapping("/login")
     @ResponseStatus(value = HttpStatus.OK)
     public DataResponse<MemberLoginResDto> login(@Valid @RequestBody MemberLoginReqDto memberLoginReqDto) {
 
-        return DataResponse.create(MemberLoginResDto.from(authServiceImpl.login(memberLoginReqDto)));
+        return DataResponse.create(authServiceImpl.login(memberLoginReqDto));
     }
 
 

@@ -3,8 +3,10 @@ package lezhin.coding.domain.member.service.impl;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
-import lezhin.coding.domain.member.dto.MemberDto;
-import lezhin.coding.domain.member.dto.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.reponse.MemberLoginResDto;
+import lezhin.coding.domain.member.dto.reponse.MemberSignupResDto;
+import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
+import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
 import lezhin.coding.global.jwt.TokenProvider;
@@ -27,17 +29,18 @@ public class AuthServiceImpl implements AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     @Override
-    public MemberEntity memberRegister(MemberDto.MemberRegisterReqDto memberDto) {
+    public MemberSignupResDto memberSignup(MemberSignupReqDto memberDto) {
 
         if (memberRepository.existsByUserEmail(memberDto.getUserEmail())) {
             throw new EmailDuplicationException("메일이 존재합니다");
         }
+        MemberEntity memberSave = memberRepository.save(memberDto.toEntity(passwordEncoder));
 
-        return memberRepository.save(memberDto.toEntity(passwordEncoder));
+        return MemberSignupResDto.of(memberSave);
     }
 
     @Override
-    public TokenDto login(MemberLoginReqDto memberLoginReqDto) {
+    public MemberLoginResDto login(MemberLoginReqDto memberLoginReqDto) {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = memberLoginReqDto.toAuthentication();
 
@@ -53,6 +56,8 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        return tokenProvider.generateTokenDto(authentication);
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+
+        return MemberLoginResDto.from(tokenDto);
     }
 }

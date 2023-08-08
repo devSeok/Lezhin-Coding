@@ -6,8 +6,7 @@ import lezhin.coding.domain.content.domain.content.MinorWorkType;
 import lezhin.coding.domain.content.domain.content.QContentEntity;
 import lezhin.coding.domain.content.domain.contentLog.QContentLogEntity;
 import lezhin.coding.domain.member.domain.entity.QMemberEntity;
-import lezhin.coding.domain.member.dto.MemberDto;
-import lezhin.coding.domain.member.dto.UserWithAdultContentResDto;
+import lezhin.coding.domain.member.dto.reponse.UserWithAdultContentResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
