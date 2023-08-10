@@ -1,6 +1,5 @@
-package lezhin.coding;
+package lezhin.coding.global.mock;
 
-import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -16,12 +15,12 @@ public class WithCustomMockUserSecurityContextFactory implements WithSecurityCon
 
     @Override
     public SecurityContext createSecurityContext(WithCustomMockUser annotation) {
-        String userUuid = annotation.userEmail();
+        String userEmail = annotation.userEmail();
         String role = annotation.role();
 
         //여기서 바인딩되어 반환할 객체를 정의해주면 됩니다
 
-        UserDetails principal = new User(userUuid, "", List.of(new SimpleGrantedAuthority(role)));
+        UserDetails principal = new User(userEmail, "", List.of(new SimpleGrantedAuthority(role)));
 
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(principal, "password", List.of(new SimpleGrantedAuthority(role)));

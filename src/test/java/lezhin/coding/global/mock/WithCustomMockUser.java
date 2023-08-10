@@ -1,4 +1,4 @@
-package lezhin.coding;
+package lezhin.coding.global.mock;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 

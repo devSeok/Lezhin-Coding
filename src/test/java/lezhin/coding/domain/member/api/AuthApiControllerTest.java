@@ -1,21 +1,17 @@
 package lezhin.coding.domain.member.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lezhin.coding.WithCustomMockUser;
-import lezhin.coding.domain.member.domain.entity.MemberEntity;
+import lezhin.coding.global.mock.WithCustomMockUser;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 
 import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
-import lezhin.coding.domain.member.dto.reponse.MemberLoginResDto;
 import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.config.security.WebSecurityConfig;
-import lezhin.coding.global.jwt.dto.TokenDto;
 import org.apache.catalina.security.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

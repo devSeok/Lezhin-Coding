@@ -1,8 +1,7 @@
 package lezhin.coding.domain.content.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lezhin.coding.IntegrationTestSupport;
-import lezhin.coding.WithCustomMockUser;
+import lezhin.coding.global.mock.WithCustomMockUser;
 import lezhin.coding.domain.content.domain.comment.Comment;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.MinorWorkType;
@@ -23,11 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

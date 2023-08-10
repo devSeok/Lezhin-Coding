@@ -50,7 +50,6 @@ public class LezhinContentServiceImpl implements ContentService {
     @Override
     @Transactional
     public ContentRegisterResDto contentRegister(ContentRegisterReqDto dto) {
-        validateAmount(dto.getPayType(), dto.getAmount());
 
         return ContentRegisterResDto.of(contentRepository.save(dto.toEntity()));
     }
@@ -105,29 +104,9 @@ public class LezhinContentServiceImpl implements ContentService {
 
         ContentEntity findContent = contentRepository.findById(contentId)
                 .orElseThrow(() -> new EntityNotFoundException("컨텐츠를 찾을수 없습니다"));
-        validateAmount(dto.getPayType(), dto.getAmount());
+
         findContent.payTypeChange(dto.getPayType(), dto.getAmount());
 
         return PayTypeChangeResDto.of(contentRepository.save(findContent));
-    }
-
-
-    private void validateAmount(String payType, Amount amount) {
-        int amountValue = amount.getValue();
-
-        switch (payType) {
-            case "FREE" :
-                if (amountValue != 0) {
-                    throw new ContentAmountFreeVaildException("무료는 0값이어야합니다.");
-                }
-                break;
-            case "PAY" :
-                if (amountValue < 100 || amountValue > 500) {
-                    throw new ContentAmountPayMinLimitException("유료는 100원~500원 값이어야 합니다.");
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("유효하지 않은 payType 입니다.");
-        }
     }
 }

@@ -1,7 +1,7 @@
 package lezhin.coding.domain.content.service.impl;
 
 import lezhin.coding.IntegrationTestSupport;
-import lezhin.coding.WithCustomMockUser;
+import lezhin.coding.global.mock.WithCustomMockUser;
 import lezhin.coding.domain.content.domain.comment.Comment;
 import lezhin.coding.domain.content.domain.comment.CommentRepository;
 import lezhin.coding.domain.content.domain.content.Amount;
@@ -26,28 +26,18 @@ import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
-import lezhin.coding.global.common.utils.SecurityUtil;
 import lezhin.coding.global.exception.error.exception.*;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 
 class LezhinContentServiceImplTest extends IntegrationTestSupport {
