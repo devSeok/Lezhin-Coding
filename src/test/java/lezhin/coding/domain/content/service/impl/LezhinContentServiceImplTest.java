@@ -150,10 +150,6 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
         MemberEntity memberInsert = createMember(userEmail, "진석");
         MemberEntity save = memberRepository.saveAndFlush(memberInsert);
 
-// SecurityUtil 모킹
-        SecurityUtil securityUtilMock = Mockito.mock(SecurityUtil.class);
-        when(securityUtilMock.getCurrentMemberId()).thenReturn(save.getId());
-
         System.out.println(save.getId());
         ContentEntity contentSave = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         EvaluationReqDto evaluationReqDto = getEvaluationReqDto(contentSave.getId());
@@ -191,8 +187,10 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
         UserEmail userEmail = UserEmail.builder()
                 .value("test@naver.com").build();
         MemberEntity memberInsert = createMember(userEmail, "진석");
-        EvaluationEntity evaluationEntity1 = EvaluationEntity.create(memberInsert, contentEntity, EvaluationType.LIKE.getCode());
-        EvaluationEntity evaluationEntity2 = EvaluationEntity.create(memberInsert, contentEntity, EvaluationType.LIKE.getCode());
+        MemberEntity MemberSave = memberRepository.save(memberInsert);
+
+        EvaluationEntity evaluationEntity1 = EvaluationEntity.create(MemberSave, contentEntity, EvaluationType.LIKE.getCode());
+        EvaluationEntity evaluationEntity2 = EvaluationEntity.create(MemberSave, contentEntity, EvaluationType.LIKE.getCode());
 
         evaluationRepository.saveAll(List.of(evaluationEntity1, evaluationEntity2));
 
@@ -212,7 +210,13 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
     @DisplayName("등록된 컨텐츠 값을 가져온다.")
     @WithCustomMockUser
     void getRowContent() {
+
         // given
+        UserEmail userEmail = UserEmail.builder()
+                .value("test@naver.com").build();
+        MemberEntity memberInsert = createMember(userEmail, "진석");
+        MemberEntity MemberSave = memberRepository.save(memberInsert);
+
         ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         //when
         ContentResultDto rowContent = lezhinContentService.getRowContent(contentEntity.getId());

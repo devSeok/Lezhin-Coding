@@ -9,6 +9,7 @@ import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
 import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
+import lezhin.coding.global.exception.error.exception.UserNotException;
 import lezhin.coding.global.jwt.TokenProvider;
 import lezhin.coding.global.jwt.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         MemberEntity byEmail = memberRepository.findByUserEmail(email)
-                .orElseThrow(() -> new EmailDuplicationException("유저 정보가 없습니다."));
+                .orElseThrow(() -> new UserNotException("유저 정보가 없습니다."));
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨

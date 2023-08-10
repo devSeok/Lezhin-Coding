@@ -13,6 +13,7 @@ import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
 import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
+import lezhin.coding.global.exception.error.exception.UserNotException;
 import lezhin.coding.global.jwt.dto.TokenDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -122,7 +123,7 @@ class AuthServiceImplTest extends IntegrationTestSupport {
         //when
         //then
         assertThatThrownBy(() -> authServiceImpl.login(memberLoginReqDto))
-                .isInstanceOf(EmailDuplicationException.class)
+                .isInstanceOf(UserNotException.class)
                 .hasMessage("유저 정보가 없습니다.");
     }
 

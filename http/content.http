@@ -43,6 +43,6 @@ Authorization: {{ authorizationToken }}
 
 ### 작품 랭킹
 
-GET localhost:8080/api/content/ranking
+GET localhost:8080/api/content/ranking?limit=3
 Content-Type: application/json
 Authorization: {{ authorizationToken }}

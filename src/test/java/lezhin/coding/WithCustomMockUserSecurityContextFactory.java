@@ -16,12 +16,12 @@ public class WithCustomMockUserSecurityContextFactory implements WithSecurityCon
 
     @Override
     public SecurityContext createSecurityContext(WithCustomMockUser annotation) {
-        String userUuid = annotation.userUuid();
+        String userUuid = annotation.userEmail();
         String role = annotation.role();
 
         //여기서 바인딩되어 반환할 객체를 정의해주면 됩니다
 
-        UserDetails principal = new User("1", "", List.of(new SimpleGrantedAuthority(role)));
+        UserDetails principal = new User(userUuid, "", List.of(new SimpleGrantedAuthority(role)));
 
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(principal, "password", List.of(new SimpleGrantedAuthority(role)));

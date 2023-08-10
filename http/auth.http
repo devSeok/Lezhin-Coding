@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "userName" : "33",
-  "userEmail" : "111@naver.com",
+  "userEmail" : "1131@naver.com",
   "password": "test",
   "gender" : "MAN",
   "type" : "GENERAL"
@@ -15,7 +15,7 @@ POST localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "email" : "111@naver.com",
+  "email" : "1131@naver.com",
   "password": "test"
 }
 > {%

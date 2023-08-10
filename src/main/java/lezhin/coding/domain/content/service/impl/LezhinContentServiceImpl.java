@@ -10,6 +10,7 @@ import lezhin.coding.domain.content.domain.content.dto.TuplieResult;
 import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
+import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.ContentResultDto;
@@ -45,6 +46,7 @@ public class LezhinContentServiceImpl implements ContentService {
     private final CommentRepository commentRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ContentLogRepository contentLogRepository;
+    private final EvaluationRepository evaluationRepository;
     @Override
     @Transactional
     public ContentRegisterResDto contentRegister(ContentRegisterReqDto dto) {
@@ -57,7 +59,7 @@ public class LezhinContentServiceImpl implements ContentService {
     @Transactional
     public EvaluationRegisterResDto evaluation(EvaluationReqDto dto) {
 
-        MemberEntity findMember = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+        MemberEntity findMember = memberRepository.findByUserEmail(SecurityUtil.getCurrentMemberEmail())
                 .orElseThrow(() -> new UserNotException("유저 정보가 없습니다."));
 
         ContentEntity findContent = contentRepository.findById(dto.getContentId())
@@ -65,7 +67,7 @@ public class LezhinContentServiceImpl implements ContentService {
 
         EvaluationEntity evaluation = EvaluationEntity.create(findMember, findContent, dto.getEvaluationType());
         findMember.addEvaluationEntities(evaluation);
-        memberRepository.save(findMember);
+        evaluationRepository.save(evaluation);
 
         CommentEntity comments = CommentEntity.create(findContent, findMember, dto.getComment());
 

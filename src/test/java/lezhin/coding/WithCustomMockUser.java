@@ -9,8 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 @WithSecurityContext(factory = WithCustomMockUserSecurityContextFactory.class)
 public @interface WithCustomMockUser  {
 
-
-    String userUuid() default "userUuid";
+    String userEmail() default "test@naver.com";
 
     String role() default "NORMAL";
+
 }

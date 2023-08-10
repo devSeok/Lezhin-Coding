@@ -32,6 +32,7 @@ public class MemberSignupResDto {
                     .userEmail(member.getUserEmail().getValue())
                     .userName(member.getUserName().getValue())
                     .gender(member.getGender().getCode())
+                    .type(member.getType())
                     .build();
     }
 }

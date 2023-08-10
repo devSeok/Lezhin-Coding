@@ -37,8 +37,6 @@ public class TokenProvider {
     // 생성자
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
 
-        System.out.println("=========");
-        System.out.println(secretKey);
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
