@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 @Getter
@@ -16,8 +17,9 @@ import javax.validation.constraints.Email;
 @JsonIgnoreProperties({"host", "id"})
 public class UserEmail {
 
-    @Column(name = "userEmail", nullable = false, unique = true)
-    @Email(message = "메일잘못되었습니다.")
+    @Column(name = "userEmail", nullable = false, unique = true, length = 100)
+    @NotBlank(message = "이메일은 필수입니다.")
+    @Email(message = "이메일 형식이 아닙니다.")
     private String value;
 
     @Builder

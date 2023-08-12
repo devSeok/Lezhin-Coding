@@ -77,8 +77,10 @@ class AuthApiControllerTest  {
     @WithCustomMockUser
     void memberLogin() throws Exception{
         // given
+        UserEmail userEmail= UserEmail.builder().value("test@nave.com").build();
+
         MemberLoginReqDto test = MemberLoginReqDto.builder()
-                .email("test@nave.com")
+                .email(userEmail)
                 .password("test")
                 .build();
 

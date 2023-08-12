@@ -7,6 +7,7 @@ import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lezhin.coding.global.exception.error.exception.ContentAmountFreeVaildException;
 import lezhin.coding.global.exception.error.exception.ContentAmountPayMinLimitException;
+import lezhin.coding.global.exception.error.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,12 +66,12 @@ public class ContentEntity extends BaseTimeEntity {
         switch (payType) {
             case "FREE" :
                 if (amountValue != 0) {
-                    throw new ContentAmountFreeVaildException("무료는 0값이어야합니다.");
+                    throw new ContentAmountFreeVaildException(ErrorCode.CONTENT_AMOUNT_FREE_VAILD.getMessage());
                 }
                 break;
             case "PAY" :
                 if (amountValue < 100 || amountValue > 500) {
-                    throw new ContentAmountPayMinLimitException("유료는 100원~500원 값이어야 합니다.");
+                    throw new ContentAmountPayMinLimitException(ErrorCode.CONTENT_AMOUNT_PAY_MIN_LIMIT.getMessage());
                 }
                 break;
             default:

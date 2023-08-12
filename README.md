@@ -1,6 +1,20 @@
 # Lezhin-Coding
-레진 과제 전형<br>
-지원을 해서 과제 전형을 진행한게 아닌 개발 연습삼아 진행<br>
-요구 사항은 다음와 같습니다.
+# 프로젝트명
+
+간단한 프로젝트 설명을 여기에 작성합니다.
+
+## 기술 스택
+
+다음은 이 프로젝트에서 사용된 주요 기술 스택입니다.
+
+- **백엔드:** Java, Spring Boot, IntelliJ, Gradlew, JPA, QueryDSL
+- **데이터베이스:** H2
+- **버전 관리:** Git
+- **기타:** RESTful API, JWT 인증
+- **테스트 툴:** IntelliJ http, JUnit
+
+
+
+
 ![img.png](img.png)
 ![img_1.png](img_1.png)

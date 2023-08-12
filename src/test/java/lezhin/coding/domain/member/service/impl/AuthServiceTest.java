@@ -90,7 +90,7 @@ class AuthServiceTest extends IntegrationTestSupport {
         memberRepository.save(memberInsert);
 
         MemberLoginReqDto memberLoginReqDto = MemberLoginReqDto.builder()
-                .email(email)
+                .email(userEmail)
                 .password("test")
                 .build();
 
@@ -114,8 +114,10 @@ class AuthServiceTest extends IntegrationTestSupport {
         memberRepository.save(memberInsert);
 
         final String anotherEmail = "test1@naver.com";
+        UserEmail anotherEmailValue = UserEmail.builder().value(anotherEmail).build();
+
         MemberLoginReqDto memberLoginReqDto = MemberLoginReqDto.builder()
-                .email(anotherEmail)
+                .email(anotherEmailValue)
                 .password("test")
                 .build();
 

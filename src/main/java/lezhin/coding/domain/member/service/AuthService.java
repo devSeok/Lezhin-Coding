@@ -46,11 +46,8 @@ public class AuthService {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = memberLoginReqDto.toAuthentication();
 
-        UserEmail email = UserEmail.builder()
-                .value(memberLoginReqDto.getEmail())
-                .build();
 
-        MemberEntity byEmail = memberRepository.findByUserEmail(email)
+        MemberEntity byEmail = memberRepository.findByUserEmail(memberLoginReqDto.getEmail())
                 .orElseThrow(() -> new UserNotException(ErrorCode.USER_NOT_FOUND.getMessage()));
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분

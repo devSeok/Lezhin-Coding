@@ -1,13 +1,13 @@
 package lezhin.coding.domain.member.domain.entity;
 
-import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.entity.enums.Gender;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.global.entity.BaseTimeEntity;
-import lezhin.coding.global.exception.error.exception.LikeMaxVaildException;
+import lezhin.coding.global.exception.error.exception.ErrorCode;
+import lezhin.coding.global.exception.error.exception.LikeMaxValidException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,7 +60,7 @@ public class MemberEntity extends BaseTimeEntity {
 
         int MaxWorkEvaluation = 1;
         if (evaluationEntities.size() > MaxWorkEvaluation) {
-            throw new LikeMaxVaildException("작품에 대한 평가는 작품 당 1개만 가능합니다");
+            throw new LikeMaxValidException(ErrorCode.LIKE_MAX.getMessage());
         }
 
         evaluationEntity.updateMember(this);
