@@ -16,6 +16,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -59,8 +62,9 @@ class ContentLogRepositoryImplTest extends IntegrationTestSupport {
         ContentLogEntity contentLogEntity4 = ContentLogEntity.create(member2, saveContent);
         contentLogRepository.saveAll(List.of(contentLogEntity1, contentLogEntity2, contentLogEntity3, contentLogEntity4));
 
+        Pageable pageable = PageRequest.of(0, 10);
         //when
-        List<ContentLogHistoryDto> artworkViewHistoryByContentId = contentLogRepository.getContentUserHistoryByContentId(saveContent.getId());
+        Page<ContentLogHistoryDto> artworkViewHistoryByContentId = contentLogRepository.getContentUserHistoryByContentId(saveContent.getId(), pageable);
 
         //then
         assertThat(artworkViewHistoryByContentId).hasSize(4)

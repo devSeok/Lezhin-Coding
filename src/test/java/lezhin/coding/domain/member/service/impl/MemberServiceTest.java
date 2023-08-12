@@ -76,8 +76,10 @@ class MemberServiceTest extends IntegrationTestSupport {
 
         contentLogRepository.saveAll(List.of(contentLog1, contentLog2, contentLog3, contentLog4, contentLog5, contentLog6));
 
-        LocalDateTime startDateTime = LocalDateTime.now().minusWeeks(1);
-        LocalDateTime endDateTime = LocalDateTime.now();
+        LocalDateTime now  = LocalDateTime.now();
+
+        LocalDateTime startDateTime = now.minusWeeks(1);
+        LocalDateTime endDateTime = now;
         MinorWorkType minorWorkType = MinorWorkType.ADULT_WORK;
     //when
         List<UserWithAdultContentResDto> usersWithAdultContentViews = memberServiceImpl.findUsersWithAdultContentViews(startDateTime, endDateTime, minorWorkType);

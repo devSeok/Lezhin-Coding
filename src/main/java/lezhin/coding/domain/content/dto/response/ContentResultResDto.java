@@ -1,4 +1,4 @@
-package lezhin.coding.domain.content.dto;
+package lezhin.coding.domain.content.dto.response;
 
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.enums.PayType;
@@ -6,7 +6,7 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ContentResultDto {
+public class ContentResultResDto {
 
     private Long id;
     private String content;
@@ -15,7 +15,7 @@ public class ContentResultDto {
     private String minorWorkType;
 
     @Builder
-    public ContentResultDto(Long id, String content, PayType payType, int amount, String minorWorkType) {
+    public ContentResultResDto(Long id, String content, PayType payType, int amount, String minorWorkType) {
         this.id = id;
         this.content = content;
         this.payType = payType;
@@ -23,8 +23,8 @@ public class ContentResultDto {
         this.minorWorkType = minorWorkType;
     }
 
-    public static ContentResultDto of(ContentEntity content){
-        return ContentResultDto.builder()
+    public static ContentResultResDto of(ContentEntity content){
+        return ContentResultResDto.builder()
                 .id(content.getId())
                 .content(content.getContent())
                 .payType(content.getPayType())

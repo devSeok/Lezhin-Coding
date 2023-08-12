@@ -14,7 +14,7 @@ import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepos
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
-import lezhin.coding.domain.content.dto.ContentResultDto;
+import lezhin.coding.domain.content.dto.response.ContentResultResDto;
 import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
@@ -209,7 +209,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         //when
-        ContentResultDto rowContent = contentService.getContentById(contentEntity.getId());
+        ContentResultResDto rowContent = contentService.getContentById(contentEntity.getId());
         //then
         assertThat(rowContent.getContent()).isEqualTo("test");
     }

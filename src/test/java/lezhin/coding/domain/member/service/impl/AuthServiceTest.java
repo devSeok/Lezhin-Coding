@@ -12,6 +12,7 @@ import lezhin.coding.domain.member.dto.request.MemberLoginReqDto;
 import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
+import lezhin.coding.global.exception.error.exception.ErrorCode;
 import lezhin.coding.global.exception.error.exception.UserNotException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,7 +78,7 @@ class AuthServiceTest extends IntegrationTestSupport {
         //then
         assertThatThrownBy(() -> authServiceImpl.memberSignup(memberDto))
                 .isInstanceOf(EmailDuplicationException.class)
-                .hasMessage("메일이 존재합니다");
+                .hasMessage(ErrorCode.EXISTENT_EMAIL.getMessage());
     }
     @DisplayName("회원가입 된 사용정보 기반으로 로그인에 성공한다.")
     @Test

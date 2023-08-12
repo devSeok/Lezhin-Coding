@@ -17,7 +17,7 @@ Authorization: {{ authorizationToken }}
 }
 
 ### 작품 평가
-POST localhost:8080/api/content/evaluation
+POST localhost:8080/api/content/submit-rating
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
@@ -29,7 +29,7 @@ Authorization: {{ authorizationToken }}
 
 
 ### 작품 payType 변경
-PUT localhost:8080/api/content/1/payType
+PUT localhost:8080/api/content/1/pay-type
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
@@ -38,11 +38,11 @@ Authorization: {{ authorizationToken }}
   "amount" : 200
 }
 ### 컨텐츠 로그 확인
-GET localhost:8080/api/content/1/user-log
+GET localhost:8080/api/content/1/user-history
 Authorization: {{ authorizationToken }}
 
 ### 작품 랭킹
 
-GET localhost:8080/api/content/ranking?limit=3
+GET localhost:8080/api/content/top-rankings
 Content-Type: application/json
 Authorization: {{ authorizationToken }}

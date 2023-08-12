@@ -12,7 +12,7 @@ import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
-import lezhin.coding.domain.content.dto.ContentResultDto;
+import lezhin.coding.domain.content.dto.response.ContentResultResDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
 import lezhin.coding.domain.content.dto.request.PayTypeChangeReqDto;
 import lezhin.coding.domain.content.dto.response.ContentRegisterResDto;
@@ -25,7 +25,8 @@ import lezhin.coding.global.event.content.ContentEvent;
 import lezhin.coding.global.exception.error.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -78,17 +79,17 @@ public class ContentService {
        return RankingResultResDto.of(topLikedContents, topBadContents);
     }
 
-    public List<ContentLogHistoryDto> getContentUserHistory(Long contentId) {
+    public Page<ContentLogHistoryDto> getContentUserHistory(Long contentId, Pageable pageable) {
 
-        return contentLogRepository.getContentUserHistoryByContentId(contentId);
+        return contentLogRepository.getContentUserHistoryByContentId(contentId, pageable);
     }
 
-    public ContentResultDto getContentById(Long contentId) {
+    public ContentResultResDto getContentById(Long contentId) {
         ContentEntity findContent = findContentEntity(contentId);
 
         applicationEventPublisher.publishEvent(ContentEvent.ContentHistory.of(contentId));
 
-        return ContentResultDto.of(findContent);
+        return ContentResultResDto.of(findContent);
     }
 
 

@@ -37,6 +37,8 @@ public class ContentEventHandler {
     }
 
     private MemberEntity findMemberEntity() {
+        System.out.println("================");
+        System.out.println(SecurityUtil.getCurrentMemberEmail().getValue());
         return memberRepository.findByUserEmail(SecurityUtil.getCurrentMemberEmail())
                 .orElseThrow(() -> new UserNotException(ErrorCode.USER_NOT_FOUND.getMessage()));
     }
