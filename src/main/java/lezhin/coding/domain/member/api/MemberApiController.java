@@ -1,7 +1,7 @@
 package lezhin.coding.domain.member.api;
 
 
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
 import lezhin.coding.domain.member.dto.reponse.UserWithAdultContentResDto;
 import lezhin.coding.domain.member.service.MemberService;
 import lezhin.coding.global.common.response.DataResponse;
@@ -18,16 +18,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberApiController {
 
-    private final MemberService memberServiceImpl;
+    private final MemberService memberService;
 
     @GetMapping("/adult/top")
     public DataResponse<List<UserWithAdultContentResDto>> findUsersWithAdultContentViews() {
-
         LocalDateTime startDateTime = LocalDateTime.now().minusWeeks(1);
         LocalDateTime endDateTime = LocalDateTime.now();
         MinorWorkType minorWorkType = MinorWorkType.ADULT_WORK;
 
-        return DataResponse.create(memberServiceImpl.findUsersWithAdultContentViews(startDateTime, endDateTime, minorWorkType));
+        List<UserWithAdultContentResDto> topViewers = memberService.findUsersWithAdultContentViews(
+                startDateTime, endDateTime, minorWorkType
+        );
+
+        return DataResponse.create(topViewers);
     }
 
 
@@ -36,7 +39,7 @@ public class MemberApiController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId) {
 
-        memberServiceImpl.memberDelete(memberId);
+        memberService.memberDelete(memberId);
        return ResponseEntity.noContent().build();
     }
 }

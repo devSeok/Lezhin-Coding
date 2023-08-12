@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TuplieResult {
+public class RankingContentResultDto {
 
     private Long contentId;
     private String content;

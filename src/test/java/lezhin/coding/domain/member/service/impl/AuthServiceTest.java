@@ -4,7 +4,6 @@ import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
-import lezhin.coding.domain.member.domain.entity.enums.Gender;
 import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
 import lezhin.coding.domain.member.dto.reponse.MemberLoginResDto;
@@ -14,7 +13,6 @@ import lezhin.coding.domain.member.dto.request.MemberSignupReqDto;
 import lezhin.coding.domain.member.service.AuthService;
 import lezhin.coding.global.exception.error.exception.EmailDuplicationException;
 import lezhin.coding.global.exception.error.exception.UserNotException;
-import lezhin.coding.global.jwt.dto.TokenDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class AuthServiceImplTest extends IntegrationTestSupport {
+class AuthServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private AuthService authServiceImpl;

@@ -4,7 +4,7 @@ package lezhin.coding.domain.content.domain.content.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lezhin.coding.domain.content.domain.content.QContentEntity;
-import lezhin.coding.domain.content.domain.content.dto.TuplieResult;
+import lezhin.coding.domain.content.domain.content.dto.RankingContentResultDto;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.domain.evaluation.QEvaluationEntity;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,9 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
     QEvaluationEntity eval = evaluationEntity;
 
     @Override
-    public List<TuplieResult> likeList(EvaluationType type, int limit) {
+    public List<RankingContentResultDto> getTopRankedContentsByType(EvaluationType type, int limit) {
         return query.select(Projections.constructor(
-                        TuplieResult.class,
+                        RankingContentResultDto.class,
                         content.id,
                         content.content,
                         eval.id.count().as("count")
@@ -37,7 +37,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                 .leftJoin(eval).on(content.id.eq(eval.contentEntity.id))
                 .groupBy(content.id)
                 .where(eval.evaluationType.eq(type))
-//                .limit(limit)
+                .limit(limit)
                 .orderBy(eval.id.count().desc())
                 .fetch();
     }

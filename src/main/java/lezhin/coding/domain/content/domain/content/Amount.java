@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 
 @Embeddable
 @Getter
@@ -17,7 +18,7 @@ import javax.validation.constraints.Min;
 public class Amount {
 
     @Column(name = "amount", nullable = false)
-    @Range(min = 0, max = 500)
+    @PositiveOrZero
     private Integer value;
 
     @Builder

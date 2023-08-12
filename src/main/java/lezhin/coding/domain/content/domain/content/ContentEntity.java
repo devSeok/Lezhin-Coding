@@ -1,8 +1,9 @@
 package lezhin.coding.domain.content.domain.content;
 
 
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
-import lezhin.coding.domain.member.domain.entity.enums.Type;
 import lezhin.coding.global.entity.BaseTimeEntity;
 import lezhin.coding.global.exception.error.exception.ContentAmountFreeVaildException;
 import lezhin.coding.global.exception.error.exception.ContentAmountPayMinLimitException;
@@ -51,7 +52,7 @@ public class ContentEntity extends BaseTimeEntity {
         this.minorWorkType = minorWorkType;
     }
 
-    public void payTypeChange(String payType, Amount amount) {
+    public void updatePayTypeAndAmount(String payType, Amount amount) {
         validateAmount(payType, amount);
 
         this.payType = PayType.of(payType);

@@ -3,9 +3,9 @@ package lezhin.coding.domain.content.domain.content.repository;
 import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
-import lezhin.coding.domain.content.domain.content.dto.TuplieResult;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
+import lezhin.coding.domain.content.domain.content.dto.RankingContentResultDto;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ContentRepositoryImplTest extends IntegrationTestSupport {
 
@@ -57,10 +55,10 @@ class ContentRepositoryImplTest extends IntegrationTestSupport {
         EvaluationEntity evaluationEntity2 = EvaluationEntity.create(save1, save, EvaluationType.LIKE.getCode());
         evaluationRepository.saveAll(List.of(evaluationEntity1, evaluationEntity2));
         //when
-        List<TuplieResult> tuplieResults = contentRepository.likeList(EvaluationType.LIKE, 3);
+        List<RankingContentResultDto> rankingContentResultDtos = contentRepository.getTopRankedContentsByType(EvaluationType.LIKE, 3);
 
         //then
-        Assertions.assertThat(tuplieResults).hasSize(1)
+        Assertions.assertThat(rankingContentResultDtos).hasSize(1)
                 .extracting("content", "count")
                 .containsExactlyInAnyOrder(
                         Tuple.tuple("test", 2L)

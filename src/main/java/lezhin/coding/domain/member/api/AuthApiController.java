@@ -19,21 +19,21 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthApiController {
 
-    private final AuthService authServiceImpl;
+    private final AuthService authService;
 
     @PostMapping("/signup")
     @ResponseStatus(value = HttpStatus.CREATED)
     public DataResponse<MemberSignupResDto> memberSignup(
             @Valid @RequestBody final MemberSignupReqDto memberDto
     ) {
-        return DataResponse.create(authServiceImpl.memberSignup(memberDto));
+        return DataResponse.create(authService.memberSignup(memberDto));
     }
 
     @PostMapping("/login")
     @ResponseStatus(value = HttpStatus.OK)
     public DataResponse<MemberLoginResDto> login(@Valid @RequestBody MemberLoginReqDto memberLoginReqDto) {
 
-        return DataResponse.create(authServiceImpl.login(memberLoginReqDto));
+        return DataResponse.create(authService.login(memberLoginReqDto));
     }
 
 

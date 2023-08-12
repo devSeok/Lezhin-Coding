@@ -2,12 +2,13 @@ package lezhin.coding.domain.content.dto.response;
 
 
 import lezhin.coding.domain.content.domain.content.ContentEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContentRegisterResDto {
     private Long id;
     private String payType;

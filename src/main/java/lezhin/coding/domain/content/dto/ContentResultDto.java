@@ -1,9 +1,7 @@
 package lezhin.coding.domain.content.dto;
 
-import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lombok.*;
 
 @Getter
@@ -17,7 +15,6 @@ public class ContentResultDto {
     private String minorWorkType;
 
     @Builder
-
     public ContentResultDto(Long id, String content, PayType payType, int amount, String minorWorkType) {
         this.id = id;
         this.content = content;

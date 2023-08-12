@@ -2,8 +2,8 @@ package lezhin.coding.domain.content.dto.request;
 
 import lezhin.coding.domain.content.domain.content.ContentEntity;
 import lezhin.coding.domain.content.domain.content.Amount;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.global.EnumTypeValid;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -24,26 +24,23 @@ public class ContentLogRepositoryImpl implements ContentLogRepositoryCustom{
     private final JPAQueryFactory query;
 
     QContentLogEntity cl = contentLogEntity;
-    QContentEntity c = contentEntity;
 
     QMemberEntity m = memberEntity;
 
     @Override
-    public List<ContentLogHistoryDto> getArtworkViewHistoryByContentId(Long contentId) {
-
-        // 현재 시간을 기준으로 최근 일주일의 시작과 끝 LocalDateTime 계산
+    public List<ContentLogHistoryDto> getContentUserHistoryByContentId(Long contentId) {
 
         return query.select(
                 constructor(
                         ContentLogHistoryDto.class,
                         m.userName.value,
                         m.userEmail.value,
-                        c.content,
+                        cl.content,
                         cl.createdDate
                 ))
                 .from(cl)
-                .join(c).on(c.id.eq(contentId))
                 .join(m).on(m.id.eq(cl.memberId))
+                .where(cl.contentId.eq(contentId))
                 .orderBy(cl.id.desc())
                 .fetch();
 

@@ -3,8 +3,8 @@ package lezhin.coding.domain.content.domain.contentLog.repository;
 import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
 import lezhin.coding.domain.content.domain.contentLog.ContentLogEntity;
 import lezhin.coding.domain.member.domain.entity.MemberEntity;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 class ContentLogRepositoryTest extends IntegrationTestSupport {
@@ -48,7 +47,7 @@ class ContentLogRepositoryTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity saveContent = contentRepository.save(content);
 
-        ContentLogEntity contentLogEntity = ContentLogEntity.create(saveContent.getId(), saveMember.getId());
+        ContentLogEntity contentLogEntity = ContentLogEntity.create(saveMember, saveContent);
         contentLogRepository.save(contentLogEntity);
 
         //when

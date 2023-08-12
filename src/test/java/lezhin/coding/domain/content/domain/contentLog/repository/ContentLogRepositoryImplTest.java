@@ -3,8 +3,8 @@ package lezhin.coding.domain.content.domain.contentLog.repository;
 import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
 import lezhin.coding.domain.content.domain.contentLog.ContentLogEntity;
 import lezhin.coding.domain.content.domain.contentLog.dto.ContentLogHistoryDto;
@@ -12,7 +12,6 @@ import lezhin.coding.domain.member.domain.entity.MemberEntity;
 import lezhin.coding.domain.member.domain.entity.embedded.UserEmail;
 import lezhin.coding.domain.member.domain.entity.embedded.UserName;
 import lezhin.coding.domain.member.domain.repository.MemberRepository;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,14 +53,14 @@ class ContentLogRepositoryImplTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity saveContent = contentRepository.save(content);
 
-        ContentLogEntity contentLogEntity1 = ContentLogEntity.create(saveContent.getId(), member1.getId());
-        ContentLogEntity contentLogEntity2 = ContentLogEntity.create(saveContent.getId(), member1.getId());
-        ContentLogEntity contentLogEntity3 = ContentLogEntity.create(saveContent.getId(), member2.getId());
-        ContentLogEntity contentLogEntity4 = ContentLogEntity.create(saveContent.getId(), member2.getId());
+        ContentLogEntity contentLogEntity1 = ContentLogEntity.create(member1, saveContent);
+        ContentLogEntity contentLogEntity2 = ContentLogEntity.create(member1, saveContent);
+        ContentLogEntity contentLogEntity3 = ContentLogEntity.create(member2, saveContent);
+        ContentLogEntity contentLogEntity4 = ContentLogEntity.create(member2, saveContent);
         contentLogRepository.saveAll(List.of(contentLogEntity1, contentLogEntity2, contentLogEntity3, contentLogEntity4));
 
         //when
-        List<ContentLogHistoryDto> artworkViewHistoryByContentId = contentLogRepository.getArtworkViewHistoryByContentId(saveContent.getId());
+        List<ContentLogHistoryDto> artworkViewHistoryByContentId = contentLogRepository.getContentUserHistoryByContentId(saveContent.getId());
 
         //then
         assertThat(artworkViewHistoryByContentId).hasSize(4)

@@ -1,6 +1,5 @@
 package lezhin.coding.domain.content.domain.evaluation;
 
-import lezhin.coding.domain.content.domain.content.PayType;
 import lezhin.coding.global.PolymorphicEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

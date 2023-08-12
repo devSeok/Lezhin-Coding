@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ContentLogRepositoryCustom {
 
-    public List<ContentLogHistoryDto> getArtworkViewHistoryByContentId(Long contentId);
+     List<ContentLogHistoryDto> getContentUserHistoryByContentId(Long contentId);
 }

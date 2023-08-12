@@ -1,4 +1,4 @@
-package lezhin.coding.domain.content.service.impl;
+package lezhin.coding.domain.content.service;
 
 import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.global.mock.WithCustomMockUser;
@@ -6,9 +6,9 @@ import lezhin.coding.domain.content.domain.comment.Comment;
 import lezhin.coding.domain.content.domain.comment.CommentRepository;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
-import lezhin.coding.domain.content.domain.content.dto.RankResultDto;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
+import lezhin.coding.domain.content.dto.response.RankingResultResDto;
 import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
 import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationEntity;
@@ -54,7 +54,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
     private EvaluationRepository evaluationRepository;
 
     @Autowired
-    private LezhinContentServiceImpl lezhinContentService;
+    private ContentService contentService;
 
     @BeforeEach
     void setUp() {
@@ -78,7 +78,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         ContentRegisterReqDto contentRegisterReqDto = getContentRegisterReqDto(0, PayType.FREE.getCode());
         //when
-        ContentRegisterResDto contentedRegister = lezhinContentService.contentRegister(contentRegisterReqDto);
+        ContentRegisterResDto contentedRegister = contentService.registerContent(contentRegisterReqDto);
 
         //then
         assertThat(contentedRegister.getAmount()).isEqualTo(0);
@@ -93,7 +93,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         ContentRegisterReqDto contentRegisterReqDto = getContentRegisterReqDto(100, PayType.PAY.getCode());
         //when
-        ContentRegisterResDto contentedRegister = lezhinContentService.contentRegister(contentRegisterReqDto);
+        ContentRegisterResDto contentedRegister = contentService.registerContent(contentRegisterReqDto);
 
         //then
         assertThat(contentedRegister.getAmount()).isEqualTo(100);
@@ -110,7 +110,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         //when
         //then
-        assertThatThrownBy(() -> lezhinContentService.contentRegister(contentRegisterReqDto))
+        assertThatThrownBy(() -> contentService.registerContent(contentRegisterReqDto))
                 .isInstanceOf(ContentAmountFreeVaildException.class)
                 .hasMessage("무료는 0값이어야합니다.");
     }
@@ -123,7 +123,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         //when
         //then
-        assertThatThrownBy(() -> lezhinContentService.contentRegister(contentRegisterReqDto))
+        assertThatThrownBy(() -> contentService.registerContent(contentRegisterReqDto))
                 .isInstanceOf(ContentAmountPayMinLimitException.class)
                 .hasMessage("유료는 100원~500원 값이어야 합니다.");
     }
@@ -145,7 +145,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
         EvaluationReqDto evaluationReqDto = getEvaluationReqDto(contentSave.getId());
 
         //when
-        EvaluationRegisterResDto evaluation = lezhinContentService.evaluation(evaluationReqDto);
+        EvaluationRegisterResDto evaluation = contentService.submitRating(evaluationReqDto);
 
         //then
         assertThat(evaluation.getContentId()).isEqualTo(contentSave.getId());
@@ -162,7 +162,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         //when
         //then
-        assertThatThrownBy(() -> lezhinContentService.evaluation(evaluationReqDto))
+        assertThatThrownBy(() -> contentService.submitRating(evaluationReqDto))
                 .isInstanceOf(UserNotException.class)
                 .hasMessage("유저 정보가 없습니다.");
     }
@@ -185,10 +185,10 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
         evaluationRepository.saveAll(List.of(evaluationEntity1, evaluationEntity2));
 
         //when
-        RankResultDto rankResultDto = lezhinContentService.sortEvaluationContent(3);
+        RankingResultResDto rankingResultDto = contentService.getTopRankedContents(3);
 
         //then
-        assertThat(rankResultDto.getLike()).hasSize(1)
+        assertThat(rankingResultDto.getLike()).hasSize(1)
                 .extracting("content", "count")
                 .containsExactlyInAnyOrder(
                   tuple("test", 2L)
@@ -209,7 +209,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
         //when
-        ContentResultDto rowContent = lezhinContentService.getRowContent(contentEntity.getId());
+        ContentResultDto rowContent = contentService.getContentById(contentEntity.getId());
         //then
         assertThat(rowContent.getContent()).isEqualTo("test");
     }
@@ -227,7 +227,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
                 .amount(amountValue)
                 .build();
         //when
-        PayTypeChangeResDto contentEntity1 = lezhinContentService.payTypeChange(contentEntity.getId(), build);
+        PayTypeChangeResDto contentEntity1 = contentService.changeContentPayType(contentEntity.getId(), build);
 
         //then
         assertThat(contentEntity1.getPayType()).isEqualTo(PayType.PAY.getCode());
@@ -247,7 +247,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
                 .amount(amountValue)
                 .build();
         //when
-        PayTypeChangeResDto contentEntity1 = lezhinContentService.payTypeChange(contentEntity.getId(), build);
+        PayTypeChangeResDto contentEntity1 = contentService.changeContentPayType(contentEntity.getId(), build);
 
         //then
         assertThat(contentEntity1.getPayType()).isEqualTo(PayType.FREE.getCode());
@@ -255,7 +255,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("특정 작품을 무료로 전환시 금액을 0원 이상으로 작성시 예외처리가 된다..")
+    @DisplayName("특정 작품을 무료로 전환시 금액을 0원 이상으로 작성시 예외처리가 된다.")
     void payTypeFreeNotChange() {
         // given
         ContentEntity contentEntity = contentCreate(PayType.PAY, 100, MinorWorkType.ADULT_WORK);
@@ -268,7 +268,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
                 .build();
         //when
         //then
-            assertThatThrownBy(() -> lezhinContentService.payTypeChange(contentEntity.getId(), build))
+            assertThatThrownBy(() -> contentService.changeContentPayType(contentEntity.getId(), build))
                     .isInstanceOf(ContentAmountFreeVaildException.class)
                     .hasMessage("무료는 0값이어야합니다.");
 
@@ -288,7 +288,7 @@ class LezhinContentServiceImplTest extends IntegrationTestSupport {
 
         //when
         //then
-        assertThatThrownBy(() -> lezhinContentService.payTypeChange(contentEntity.getId(), build))
+        assertThatThrownBy(() -> contentService.changeContentPayType(contentEntity.getId(), build))
                 .isInstanceOf(ContentAmountPayMinLimitException.class)
                 .hasMessage("유료는 100원~500원 값이어야 합니다.");
 

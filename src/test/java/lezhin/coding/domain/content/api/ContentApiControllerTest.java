@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lezhin.coding.global.mock.WithCustomMockUser;
 import lezhin.coding.domain.content.domain.comment.Comment;
 import lezhin.coding.domain.content.domain.content.Amount;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.domain.content.domain.evaluation.EvaluationType;
 import lezhin.coding.domain.content.dto.request.ContentRegisterReqDto;
 import lezhin.coding.domain.content.dto.request.EvaluationReqDto;
@@ -62,7 +62,7 @@ class ContentApiControllerTest {
     @WithCustomMockUser
     void userContentSelectList() throws Exception {
 
-        mockMvc.perform(get("/api/content/1/user-log")
+        mockMvc.perform(get("/api/content/1/user-history")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -109,7 +109,7 @@ class ContentApiControllerTest {
                 .comment(commentValue)
                 .build();
 
-        mockMvc.perform(post("/api/content/evaluation")
+        mockMvc.perform(post("/api/content/submit-rating")
                         .content(objectMapper.writeValueAsString(evaluationReqDto))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -124,7 +124,7 @@ class ContentApiControllerTest {
     @WithCustomMockUser
     void ranking() throws Exception {
 
-        mockMvc.perform(get("/api/content/ranking")
+        mockMvc.perform(get("/api/content/top-rankings")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -146,7 +146,7 @@ class ContentApiControllerTest {
                 .amount(amountValue)
                 .build();
 
-        mockMvc.perform(put("/api/content/1/payType")
+        mockMvc.perform(put("/api/content/1/pay-type")
                         .content(objectMapper.writeValueAsString(payTypeChangeReqDto))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)

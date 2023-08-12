@@ -2,7 +2,7 @@ package lezhin.coding.domain.member.domain.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
 import lezhin.coding.domain.content.domain.content.QContentEntity;
 import lezhin.coding.domain.content.domain.contentLog.QContentLogEntity;
 import lezhin.coding.domain.member.domain.entity.QMemberEntity;

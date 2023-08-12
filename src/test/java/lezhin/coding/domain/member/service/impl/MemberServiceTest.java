@@ -6,8 +6,8 @@ import lezhin.coding.domain.content.domain.comment.CommentEntity;
 import lezhin.coding.domain.content.domain.comment.CommentRepository;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
 import lezhin.coding.domain.content.domain.contentLog.ContentLogEntity;
 import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
@@ -30,7 +30,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-class MemberServiceImplTest extends IntegrationTestSupport {
+class MemberServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -66,13 +66,13 @@ class MemberServiceImplTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity contentSave = contentRepository.save(content);
 
-        ContentLogEntity contentLog1 = createContentLog(contentSave.getId(), member1.getId());
-        ContentLogEntity contentLog2 = createContentLog(contentSave.getId(), member1.getId());
-        ContentLogEntity contentLog3 = createContentLog(contentSave.getId(), member1.getId());
+        ContentLogEntity contentLog1 =  ContentLogEntity.create(member1, content);
+        ContentLogEntity contentLog2 =  ContentLogEntity.create(member1, content);
+        ContentLogEntity contentLog3 =  ContentLogEntity.create(member1, content);
 
-        ContentLogEntity contentLog4 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog5 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog6 = createContentLog(contentSave.getId(), member2.getId());
+        ContentLogEntity contentLog4 =  ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog5 =  ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog6 =  ContentLogEntity.create(member2, content);
 
         contentLogRepository.saveAll(List.of(contentLog1, contentLog2, contentLog3, contentLog4, contentLog5, contentLog6));
 
@@ -101,7 +101,7 @@ class MemberServiceImplTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity contentSave = contentRepository.save(content);
 
-        ContentLogEntity contentLog = createContentLog(contentSave.getId(), member1.getId());
+        ContentLogEntity contentLog =  ContentLogEntity.create(member1, content);
         contentLogRepository.save(contentLog);
 
         EvaluationEntity evaluationEntity = EvaluationEntity.create(saveMember, contentSave, "LIKE");
@@ -152,12 +152,4 @@ class MemberServiceImplTest extends IntegrationTestSupport {
                 .minorWorkType(minorWorkType)
                 .build();
     }
-
-    private ContentLogEntity createContentLog(Long contentId, Long memberId) {
-        return ContentLogEntity.builder()
-                .contentId(contentId)
-                .memberId(memberId)
-                .build();
-    }
-
 }

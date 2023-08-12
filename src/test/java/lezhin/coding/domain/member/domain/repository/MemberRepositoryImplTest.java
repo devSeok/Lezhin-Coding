@@ -3,8 +3,8 @@ package lezhin.coding.domain.member.domain.repository;
 import lezhin.coding.IntegrationTestSupport;
 import lezhin.coding.domain.content.domain.content.Amount;
 import lezhin.coding.domain.content.domain.content.ContentEntity;
-import lezhin.coding.domain.content.domain.content.MinorWorkType;
-import lezhin.coding.domain.content.domain.content.PayType;
+import lezhin.coding.domain.content.domain.content.enums.MinorWorkType;
+import lezhin.coding.domain.content.domain.content.enums.PayType;
 import lezhin.coding.domain.content.domain.content.repository.ContentRepository;
 import lezhin.coding.domain.content.domain.contentLog.ContentLogEntity;
 import lezhin.coding.domain.content.domain.contentLog.repository.ContentLogRepository;
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,13 +52,13 @@ class MemberRepositoryImplTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity contentSave = contentRepository.save(content);
 
-        ContentLogEntity contentLog1 = createContentLog(contentSave.getId(), member1.getId());
-        ContentLogEntity contentLog2 = createContentLog(contentSave.getId(), member1.getId());
-        ContentLogEntity contentLog3 = createContentLog(contentSave.getId(), member1.getId());
+        ContentLogEntity contentLog1 =  ContentLogEntity.create(member1, content);
+        ContentLogEntity contentLog2 =  ContentLogEntity.create(member1, content);
+        ContentLogEntity contentLog3 =  ContentLogEntity.create(member1, content);
 
-        ContentLogEntity contentLog4 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog5 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog6 = createContentLog(contentSave.getId(), member2.getId());
+        ContentLogEntity contentLog4 =  ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog5 =  ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog6 =  ContentLogEntity.create(member2, content);
 
         contentLogRepository.saveAll(List.of(contentLog1, contentLog2, contentLog3, contentLog4, contentLog5, contentLog6));
 
@@ -93,12 +92,12 @@ class MemberRepositoryImplTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity contentSave = contentRepository.save(content);
 
-        ContentLogEntity contentLog1 = createContentLog(contentSave.getId(), member1.getId());
-        ContentLogEntity contentLog2 = createContentLog(contentSave.getId(), member1.getId());
+        ContentLogEntity contentLog1 =  ContentLogEntity.create(member1, content);
+        ContentLogEntity contentLog2 =  ContentLogEntity.create(member1, content);
 
-        ContentLogEntity contentLog4 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog5 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog6 = createContentLog(contentSave.getId(), member2.getId());
+        ContentLogEntity contentLog4 =  ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog5 =  ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog6 =  ContentLogEntity.create(member2, content);
 
         contentLogRepository.saveAll(List.of(contentLog1, contentLog2, contentLog4, contentLog5, contentLog6));
 
@@ -131,12 +130,12 @@ class MemberRepositoryImplTest extends IntegrationTestSupport {
         ContentEntity content = createContent(MinorWorkType.ADULT_WORK);
         ContentEntity contentSave = contentRepository.save(content);
 
-        ContentLogEntity contentLog1 = createContentLog(contentSave.getId(), member1.getId());
-        ContentLogEntity contentLog2 = createContentLog(contentSave.getId(), member1.getId());
+        ContentLogEntity contentLog1 = ContentLogEntity.create(member1, content);
+        ContentLogEntity contentLog2 = ContentLogEntity.create(member1, content);
 
-        ContentLogEntity contentLog4 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog5 = createContentLog(contentSave.getId(), member2.getId());
-        ContentLogEntity contentLog6 = createContentLog(contentSave.getId(), member2.getId());
+        ContentLogEntity contentLog4 = ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog5 = ContentLogEntity.create(member2, content);
+        ContentLogEntity contentLog6 = ContentLogEntity.create(member2, content);
 
         contentLogRepository.saveAll(List.of(contentLog1, contentLog2, contentLog4, contentLog5, contentLog6));
         LocalDateTime startDateTime = LocalDateTime.now().minusWeeks(2);
@@ -186,13 +185,4 @@ class MemberRepositoryImplTest extends IntegrationTestSupport {
                 .minorWorkType(minorWorkType)
                 .build();
     }
-
-    private ContentLogEntity createContentLog(Long contentId, Long memberId) {
-        return ContentLogEntity.builder()
-                .contentId(contentId)
-                .memberId(memberId)
-                .build();
-    }
-
-
 }
